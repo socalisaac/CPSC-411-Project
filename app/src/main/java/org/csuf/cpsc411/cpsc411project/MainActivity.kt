@@ -16,8 +16,6 @@ class MainActivity : AppCompatActivity() {
 
         loginButton.setOnClickListener{
 
-            println("here1")
-
             val userName = findViewById<EditText>(R.id.userNameField)
             val password = findViewById<EditText>(R.id.passwordField)
 
