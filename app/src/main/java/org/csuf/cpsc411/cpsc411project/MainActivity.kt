@@ -22,14 +22,28 @@ class MainActivity : AppCompatActivity() {
             val userName = findViewById<EditText>(R.id.userNameField)
             val password = findViewById<EditText>(R.id.passwordField)
 
-            if(userName.text.toString() == "Admin" &&  password.text.toString() == "1234"){
+            val context = this
+
+            var user = User(userName.text.toString(), password.text.toString())
+
+            var db = DataBaseHandler(context)
+
+            if(db.checkLogin(user)){
                 val intent = Intent(this, MainMenu::class.java)
                 startActivity(intent)
             }
             else{
                 wrongLogin.visibility = View.VISIBLE
-            }
+            } //userName.text.toString() == "Admin" &&  password.text.toString() == "1234"
         }
+
+        val registerButton = findViewById<Button>(R.id.registerButton)
+
+        registerButton.setOnClickListener{
+            val intent = Intent(this, RegisterUser::class.java)
+            startActivity(intent)
+        }
+
     }
 
 

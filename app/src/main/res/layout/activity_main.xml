@@ -8,15 +8,15 @@
 
     <Button
         android:id="@+id/loginButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="126dp"
+        android:layout_height="64dp"
         android:text="Login"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.749" />
+        app:layout_constraintVertical_bias="0.824" />
 
     <EditText
         android:id="@+id/userNameField"
@@ -28,10 +28,10 @@
         android:text="User Name"
         app:layout_constraintBottom_toTopOf="@+id/loginButton"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.533" />
+        app:layout_constraintVertical_bias="0.473" />
 
     <EditText
         android:id="@+id/passwordField"
@@ -41,25 +41,36 @@
         android:inputType="textPassword"
         app:layout_constraintBottom_toTopOf="@+id/loginButton"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.687" />
+        app:layout_constraintVertical_bias="0.621" />
 
     <TextView
         android:id="@+id/wrongLoginTextView"
         android:layout_width="117dp"
         android:layout_height="39dp"
-        android:layout_marginTop="372dp"
-        android:layout_marginBottom="320dp"
         android:gravity="center"
         android:text="Incorrect login"
         android:textColor="#EE2234"
         android:visibility="invisible"
         app:layout_constraintBottom_toTopOf="@+id/loginButton"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/passwordField"
-        app:layout_constraintVertical_bias="0.594" />
+        app:layout_constraintVertical_bias="0.118" />
+
+    <Button
+        android:id="@+id/registerButton"
+        android:layout_width="130dp"
+        android:layout_height="41dp"
+        android:text="Register"
+        app:layout_constraintBottom_toTopOf="@+id/loginButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/passwordField"
+        app:layout_constraintVertical_bias="0.686" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
