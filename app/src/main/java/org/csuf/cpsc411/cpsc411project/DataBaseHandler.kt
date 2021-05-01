@@ -44,9 +44,11 @@ class DataBaseHandler(var context: Context) : SQLiteOpenHelper(context, DataBase
 
     fun checkLogin(user: User) : Boolean{
         val db = this.readableDatabase
-        val query = "Select * From " + UserTableName +
-                " Where " + ColUserName + " = '" + user.userName +
-                "' AND " + ColPassword + " = '" + user.password + "'";
+      
+        val query = "Select * From $UserTableName " +
+                "Where $ColUserName = '${user.userName}' " +
+                "And $ColPassword = '${user.password}' "
+      
         val result = db.rawQuery(query, null)
 
         return result.moveToFirst()
