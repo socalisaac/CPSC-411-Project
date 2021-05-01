@@ -19,8 +19,10 @@ class RegisterUser : AppCompatActivity() {
             val userName = findViewById<EditText>(R.id.registerUserName)
             val password = findViewById<EditText>(R.id.registerPassword)
 
-            val user = User(userName.text.toString(), password.text.toString())
-            val db = DataBaseHandler(this)
+            val context = this
+
+            var user = User(userName.text.toString(), password.text.toString())
+            var db = DataBaseHandler(context)
 
             val registerSuccessful = db.insertUser(user)
 
