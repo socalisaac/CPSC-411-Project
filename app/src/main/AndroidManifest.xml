@@ -9,10 +9,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.CPSC411Project">
-        <activity android:name=".RegisterUser"></activity>
+        <activity android:name=".RegisterUser" />
         <activity android:name=".Reports" />
         <activity android:name=".SalesHistory" />
         <activity android:name=".Inventory" />
+        <activity android:name=".InventoryMenu" />
+        <activity android:name=".InventoryAddItem" />
         <activity android:name=".MakeTransaction" />
         <activity android:name=".MainMenu" />
         <activity android:name=".MainActivity">
