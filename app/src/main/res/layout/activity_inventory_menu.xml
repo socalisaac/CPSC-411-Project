@@ -4,13 +4,24 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Inventory">
+    tools:context=".InventoryMenu">
 
     <Button
-        android:id="@+id/inventoryBack"
+        android:id="@+id/menuAddItem"
+        android:layout_width="190dp"
+        android:layout_height="90dp"
+        android:text="Add Item"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.117" />
+
+    <Button
+        android:id="@+id/inventoryMenuBack"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Back to Main Menu"
+        android:text="Back"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.05"
@@ -18,41 +29,17 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.976" />
 
-    <Button
-        android:id="@+id/inventoryMenu"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Edit Inventory"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.948"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.976" />
-
     <TextView
-        android:id="@+id/inventoryTitleTextView"
+        android:id="@+id/inventoryMenuTitleTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Inventory"
+        android:layout_marginTop="16dp"
+        android:text="Inventory Actions"
         app:layout_constraintBottom_toTopOf="@+id/inventoryBack"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.024" />
+        app:layout_constraintVertical_bias="0.04" />
 
-    <TableLayout
-        android:id="@+id/inventoryTableLayout"
-        android:layout_width="400dp"
-        android:layout_height="600dp"
-        android:layout_marginStart="2dp"
-        android:layout_marginTop="51dp"
-        android:layout_marginEnd="2dp"
-        android:layout_marginBottom="82dp"
-        android:background="#B2CDE2"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"></TableLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
