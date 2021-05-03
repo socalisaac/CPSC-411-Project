@@ -66,7 +66,7 @@
             android:layout_marginTop="0dp"
             android:backgroundTint="#2196F3"
             android:ems="19"
-            android:hint="Item Name"
+            android:hint="Apples"
             android:inputType="textPersonName" />
 
         <TextView
@@ -85,8 +85,8 @@
             android:layout_marginTop="0dp"
             android:backgroundTint="#2196F3"
             android:ems="5"
-            android:hint="Qty"
-            android:inputType="number" />
+            android:hint="0"
+            android:inputType="numberSigned" />
 
         <TextView
             android:id="@+id/itemPriceText"
@@ -104,8 +104,8 @@
             android:layout_marginTop="0dp"
             android:backgroundTint="#2196F3"
             android:ems="5"
-            android:hint="Price"
-            android:inputType="numberDecimal" />
+            android:hint="$0.00"
+            android:inputType="numberSigned" />
     </LinearLayout>
 
 

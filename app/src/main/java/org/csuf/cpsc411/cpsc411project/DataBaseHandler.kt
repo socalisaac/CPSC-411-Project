@@ -22,34 +22,39 @@ delete all the files you can (i think you cant delete the file just named CPSC41
 can maybe implement a clear database button for debugging
  */
 
-const val DataBaseName = "CPSC411BD"
 
-const val UserTableName = "Users"
-const val ColUserName = "UserName"
-const val ColPassword = "Password"
-const val ColUserId = "UserID"
 
-const val InventoryTableName = "Inventory"
-const val ColItemID = "ItemID"
-const val ColItemName = "ItemName"
-const val ColItemQty = "ItemQty"
-const val ColItemPrice = "ItemPrice"
+class DataBaseHandler(var context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null, 1) {
+    companion object {
+        private val DATABASE_VERSION = 1.0
+        private const val DATABASE_NAME = "CPSC411BD"
 
-class DataBaseHandler(var context: Context) : SQLiteOpenHelper(context, DataBaseName, null, 1) {
+        const val USER_TABLE_NAME = "Users"
+        const val COL_USER_ID = "UserID"
+        const val COL_USERNAME = "UserName"
+        const val COL_PASSWORD = "Password"
+
+        const val INVENTORY_TABLE_NAME = "Inventory"
+        const val COL_ITEM_ID = "ItemID"
+        const val COL_ITEM_NAME = "ItemName"
+        const val COL_ITEM_QTY = "ItemQty"
+        const val COL_ITEM_PRICE = "ItemPrice"
+    }
+
     override fun onCreate(db: SQLiteDatabase?) {
-        val createUserTable = "CREATE TABLE $UserTableName " +
-                "("
-                "$ColUserId INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                "$ColUserName VARCHAR(256), " +
-                "$ColPassword VARCHAR(256)" +
+        val createUserTable = "CREATE TABLE $USER_TABLE_NAME " +
+                "(" +
+                "$COL_USER_ID INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                "$COL_USERNAME VARCHAR(256), " +
+                "$COL_PASSWORD VARCHAR(256)" +
                 ")"
 
-        val createInventoryTable = "CREATE TABLE $InventoryTableName " +
-                "("
-                "$ColItemID INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                "$ColItemName VARCHAR(256), " +
-                "$ColItemQty INTEGER, " +
-                "$ColItemPrice VARCHAR(256) " +
+        val createInventoryTable = "CREATE TABLE $INVENTORY_TABLE_NAME " +
+                "(" +
+                "$COL_ITEM_ID INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                "$COL_ITEM_NAME VARCHAR(256), " +
+                "$COL_ITEM_QTY INTEGER, " +
+                "$COL_ITEM_PRICE DECIMAL(10, 2) " +
                 ")"
 
         db?.execSQL(createUserTable)
@@ -57,15 +62,17 @@ class DataBaseHandler(var context: Context) : SQLiteOpenHelper(context, DataBase
     }
 
     override fun onUpgrade(db: SQLiteDatabase?, oldVersion: Int, newVersion: Int) {
-        TODO("Not yet implemented")
+        db?.execSQL("DROP TABLE IF EXISTS $USER_TABLE_NAME")
+        db?.execSQL("DROP TABLE IF EXISTS $INVENTORY_TABLE_NAME")
+        onCreate(db)
     }
 
     fun insertUser(user : User): Boolean {
         val db = this.writableDatabase
         val cv = ContentValues()
-        cv.put(ColUserName, user.userName)
-        cv.put(ColPassword, user.password)
-        val result = db.insert(UserTableName, null, cv)
+        cv.put(COL_USERNAME, user.userName)
+        cv.put(COL_PASSWORD, user.password)
+        val result = db.insert(USER_TABLE_NAME, null, cv)
         return if(result == -1.toLong()) {
             Toast.makeText(context, "Failed to Add", Toast.LENGTH_SHORT).show()
             false
@@ -76,11 +83,12 @@ class DataBaseHandler(var context: Context) : SQLiteOpenHelper(context, DataBase
         }
     }
 
-    fun checkLogin(user: User) : Boolean{
+    fun checkLogin(user: User) : Boolean {
         val db = this.readableDatabase
-        val query = "Select * From $UserTableName " +
-                "Where $ColUserName = '${user.userName}' " +
-                "And $ColPassword = '${user.password}' "
+        val query = "Select * From $USER_TABLE_NAME " +
+                "Where $COL_USERNAME = '${user.userName}' " +
+                "And $COL_PASSWORD = '${user.password}' "
+
         val result = db.rawQuery(query, null)
 
         return result.moveToFirst()
@@ -90,24 +98,24 @@ class DataBaseHandler(var context: Context) : SQLiteOpenHelper(context, DataBase
     fun insertItem(item: Item): Boolean {
         val db = this.writableDatabase
         val cv = ContentValues()
-        cv.put(ColItemName, item.itemName)
-        cv.put(ColItemQty, item.itemQty)
-        cv.put(ColItemPrice, item.itemPrice)
-        val result = db.insert(InventoryTableName, null, cv)
+        cv.put(COL_ITEM_NAME, item.itemName)
+        cv.put(COL_ITEM_QTY, item.itemQty)
+        cv.put(COL_ITEM_PRICE, item.itemPrice)
+        val result = db.insert(INVENTORY_TABLE_NAME, null, cv)
         return if(result == -1.toLong()) {
-            Toast.makeText(context, "Failed to add item", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, "Failed to add ${item.itemName}", Toast.LENGTH_SHORT).show()
             false
         }
         else {
-            Toast.makeText(context, "Successfully added item", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, "Successfully added ${item.itemName}", Toast.LENGTH_SHORT).show()
             true
         }
     }
 
     // Function to get cursor object pointing to top of inventory table data
-    fun getInventoryData(): Cursor {
+    fun getInventoryData(): Cursor? {
         val db = this.readableDatabase
-        val query = " Select * From $InventoryTableName"
-        return db.rawQuery(query, null)
+        return db.rawQuery(" Select * From $INVENTORY_TABLE_NAME", null)
     }
+
 }
