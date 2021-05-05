@@ -28,7 +28,7 @@ class ServerHandler(): AppCompatActivity() {
     var callBackReceived = false
     var login: Boolean = false
 
-    fun checkServerLogin(user: User, context : MainActivity): Boolean{
+    fun checkServerLogin(user: User, context : MainActivity){
 
         println("In Check login")
         val jsonStr = Json.encodeToString(user)
@@ -46,20 +46,7 @@ class ServerHandler(): AppCompatActivity() {
                 this.login = Json.decodeFromString<Boolean>(returnedResult)
                 println("Web Service")
                 setCallBackReceived()
-
-                val wrongLogin = findViewById<TextView>(R.id.wrongLoginTextView)
-                val loginButton = findViewById<Button>(R.id.loginButton)
-
                 context.reportValidationResult(this.login)
-//                if(this.login){
-//                    val intent = Intent(context, MainMenu::class.java)
-//                    startActivity(intent)
-//                }
-//                else{
-//                    wrongLogin.visibility = View.VISIBLE
-//                } //userName.text.toString() == "Admin" &&  password.text.toString() == "1234"
-//                loginButton.text = "Login"
-//                loginButton.isEnabled = true
             }
             else {
                 Log.d("Web Service Log", "${error}")
@@ -67,8 +54,6 @@ class ServerHandler(): AppCompatActivity() {
                 setCallBackReceived()
             }
         }
-
-        return login
 
 
     }
