@@ -6,16 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".InventoryMenu">
 
-    <TextView
-        android:id="@+id/inventoryMenuTitleTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Inventory Actions"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -25,21 +15,26 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent">
 
-        <Button
-            android:id="@+id/invAddItem"
-            android:layout_width="190dp"
-            android:layout_height="90dp"
-            android:text="Add Item" />
+        <TextView
+            android:id="@+id/inventoryClearTextView"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="Are you sure you want to delete Inventory Table?"
+            android:textSize="20dp"
+            android:paddingBottom="50dp"/>
 
         <Button
-            android:id="@+id/invClearTable"
-            android:layout_width="190dp"
-            android:layout_height="90dp"
-            android:text="Clear Table" />
+            android:id="@+id/confirmClear"
+            android:layout_width="170dp"
+            android:layout_height="70dp"
+            android:layout_marginTop="200dp"
+            android:text="Confirm" />
+
     </LinearLayout>
 
     <Button
-        android:id="@+id/inventoryMenuBack"
+        android:id="@+id/inventoryClearBack"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Back"
