@@ -55,7 +55,6 @@ class ServerHandler(): AppCompatActivity() {
             }
         }
 
-
     }
 
     private fun resetCallBackReceived(){

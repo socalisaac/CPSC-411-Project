@@ -6,53 +6,78 @@
     android:layout_height="match_parent"
     tools:context=".Inventory">
 
-    <Button
-        android:id="@+id/inventoryBack"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Back to Main Menu"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.05"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.976" />
 
-    <Button
-        android:id="@+id/inventoryMenu"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Edit Inventory"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.948"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.976" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center_horizontal"
+        android:weightSum="20"
+        >
 
-    <TextView
-        android:id="@+id/inventoryTitleTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Inventory"
-        app:layout_constraintBottom_toTopOf="@+id/inventoryBack"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.024" />
 
-    <TableLayout
-        android:id="@+id/inventoryTableLayout"
-        android:layout_width="400dp"
-        android:layout_height="600dp"
-        android:layout_marginStart="2dp"
-        android:layout_marginTop="51dp"
-        android:layout_marginEnd="2dp"
-        android:layout_marginBottom="82dp"
-        android:background="#B2CDE2"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"></TableLayout>
+        <TextView
+            android:id="@+id/inventoryTitleTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Inventory"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"></TextView>
+
+        <TextView
+            android:id="@+id/inventoryHelpTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Press and hold an item to edit"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"></TextView>
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scrollbars="vertical"
+            android:layout_weight="20">
+
+            <TableLayout
+                android:id="@+id/inventoryTableLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#B2CDE2"
+                android:gravity="center"
+                android:isScrollContainer="true">
+
+            </TableLayout>
+
+        </ScrollView>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/inventoryBack"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="80dp"
+                android:paddingTop="10dp"
+                android:paddingBottom="15dp"
+                android:text="Menu"/>
+
+            <Button
+                android:id="@+id/inventoryMenu"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginLeft="80dp"
+                android:layout_marginRight="10dp"
+                android:paddingTop="10dp"
+                android:paddingBottom="15dp"
+                android:text="Edit" />
+        </LinearLayout>
+
+    </LinearLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

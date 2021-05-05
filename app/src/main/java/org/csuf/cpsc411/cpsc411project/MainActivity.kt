@@ -32,8 +32,6 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val wrongLogin = findViewById<TextView>(R.id.wrongLoginTextView)
-
         val loginButton = findViewById<Button>(R.id.loginButton)
 
         loginButton.setOnClickListener{

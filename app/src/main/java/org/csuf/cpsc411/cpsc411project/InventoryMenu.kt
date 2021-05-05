@@ -4,6 +4,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
+import android.widget.Toast
 
 
 class InventoryMenu : AppCompatActivity() {
@@ -18,10 +19,17 @@ class InventoryMenu : AppCompatActivity() {
             startActivity(intent)
         }
 
-        val menuAddItem = findViewById<Button>(R.id.menuAddItem)
+        val menuAddItem = findViewById<Button>(R.id.invAddItem)
 
         menuAddItem.setOnClickListener{
             val intent = Intent(this, InventoryAddItem::class.java)
+            startActivity(intent)
+        }
+
+        val menuClearTable = findViewById<Button>(R.id.invClearTable)
+
+        menuClearTable.setOnClickListener{
+            val intent = Intent(this, InventoryClear::class.java)
             startActivity(intent)
         }
     }
