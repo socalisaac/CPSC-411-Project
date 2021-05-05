@@ -9,6 +9,22 @@ import android.widget.EditText
 import android.widget.TextView
 
 class MainActivity : AppCompatActivity() {
+
+    fun reportValidationResult(res :Boolean) {
+//        if (res) {
+//            // display the text
+//        }
+
+        if(res){
+            val intent = Intent(this, MainMenu::class.java)
+            startActivity(intent)
+        }
+        else{
+            val wrongLogin = findViewById<TextView>(R.id.wrongLoginTextView)
+            wrongLogin.visibility = View.VISIBLE
+        } //userName.text.toString() == "Admin" &&  password.text.toString() == "1234"
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -22,13 +38,33 @@ class MainActivity : AppCompatActivity() {
             val userName = findViewById<EditText>(R.id.userNameField)
             val password = findViewById<EditText>(R.id.passwordField)
 
+            loginButton.text = "Validating"
+            loginButton.isEnabled = false
+
+
             val context = this
 
             var user = User(userName.text.toString(), password.text.toString())
 
-            var db = DataBaseHandler(context)
+            var serverDB = ServerHandler()
 
-            if(db.checkLogin(user)){
+            var db = DataBaseHandler(context) //db.checkLogin(user)
+
+            println("Calling Server fun")
+            serverDB.checkServerLogin(user, this)
+
+           // var testVal = serverDB.callBackReceived
+//            var cont = true
+//            while(cont)
+//            {
+//                if (serverDB.callBackReceived) {
+//                    println("response comes back.")
+//                    cont = false
+//                }
+//                //println("Here $testVal")
+//            }
+
+            if(serverDB.login){
                 val intent = Intent(this, MainMenu::class.java)
                 startActivity(intent)
             }
