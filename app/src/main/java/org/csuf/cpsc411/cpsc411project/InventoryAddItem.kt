@@ -30,7 +30,7 @@ class InventoryAddItem : AppCompatActivity() {
 
             var current: String = ""
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-                if (s.toString() != current) {
+                if (s.toString() != current && s.isNotBlank()) {
                     itemPrice.removeTextChangedListener(this)
 
                     val cleanString: String = s.replace("""[$,.]""".toRegex(), "")
@@ -56,12 +56,24 @@ class InventoryAddItem : AppCompatActivity() {
 
         val addItem = findViewById<Button>(R.id.addItem)
 
-
-        //TODO: Convert itemPrice back from its currency format to an integer for storage
         addItem.setOnClickListener{
-            val item = Item(itemName.text.toString(), itemQty.text.toString().toInt(), itemPrice.text.toString().toFloat())
-            val db = DataBaseHandler(this)
-            db.insertItem(item)
+            val itemNameString = itemName.text.toString()
+            val itemQtyString = itemQty.text.toString()
+            val priceCleanString: String = itemPrice.text.toString().replace("""[$,.]""".toRegex(), "")
+
+            when {
+                itemNameString.trim().isEmpty() -> Toast.makeText(this, "Please enter a name", Toast.LENGTH_SHORT).show()
+                itemQtyString.trim().isEmpty() -> Toast.makeText(this, "Please enter a quantity", Toast.LENGTH_SHORT).show()
+                priceCleanString.trim().isEmpty() -> Toast.makeText(this, "Please enter a price", Toast.LENGTH_SHORT).show()
+                else -> {
+                    val item = Item(itemNameString, itemQtyString.toInt(), priceCleanString.toInt())
+                    val db = DataBaseHandler(this)
+                    db.insertItem(item)
+                    itemName.text.clear()
+                    itemQty.text.clear()
+                    itemPrice.text.clear()
+                }
+            }
         }
 
         val clearItem = findViewById<Button>(R.id.clearItem)

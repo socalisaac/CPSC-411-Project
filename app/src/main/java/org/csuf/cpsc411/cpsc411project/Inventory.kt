@@ -6,6 +6,10 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Gravity
 import android.widget.*
+import androidx.core.content.ContextCompat
+import java.text.NumberFormat
+
+const val EXTRA_ITEM_ID = "org.csuf.cpsc411.cpsc411project.ITEMID"
 
 class Inventory : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -42,34 +46,54 @@ class Inventory : AppCompatActivity() {
         invTableLayout.removeAllViews()
 
         val invHeadRow = createHeaderRow()
-
         invTableLayout.addView(invHeadRow, TableLayout.LayoutParams(TableLayout.LayoutParams.MATCH_PARENT, TableLayout.LayoutParams.MATCH_PARENT))
 
         val db = DataBaseHandler(this)
-        val cursor = db.getInventoryData()
-        if(cursor!!.moveToFirst() && cursor!!.count >= 1) {
+        val cursor = db.getAllInventoryData()
+        var isAlternateRow = false
+        if(cursor!!.moveToFirst() && cursor.count >= 1) {
             do {
                 val newTableRow = TableRow(this)
+                if(isAlternateRow){
+                    newTableRow.setBackgroundColor(ContextCompat.getColor(this, R.color.material_on_primary_emphasis_high_type))
+                    isAlternateRow = !isAlternateRow
+                }
+                else{
+                    newTableRow.setBackgroundColor(ContextCompat.getColor(this, R.color.material_on_primary_emphasis_medium))
+                    isAlternateRow = !isAlternateRow
+                }
 
                 val textID = TextView(this)
                 textID.text = cursor.getString(cursor.getColumnIndex(DataBaseHandler.COL_ITEM_ID))
-                textID.setPadding(5, 5, 5, 5)
+                textID.setPadding(5, 10, 5, 10)
                 newTableRow.addView(textID, TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 0.1F))
 
                 val textName = TextView(this)
                 textName.text = cursor.getString(cursor.getColumnIndex(DataBaseHandler.COL_ITEM_NAME))
-                textName.setPadding(5, 5, 5, 5)
+                textName.setPadding(5, 10, 5, 10)
                 newTableRow.addView(textName, TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 0.5F))
 
                 val textQty = TextView(this)
                 textQty.text = cursor.getString(cursor.getColumnIndex(DataBaseHandler.COL_ITEM_QTY))
-                textQty.setPadding(5, 5, 5, 5)
+                textQty.setPadding(5, 10, 5, 10)
                 newTableRow.addView(textQty, TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 0.15F))
 
                 val textPrice = TextView(this)
-                textPrice.text = "$${cursor.getString(cursor.getColumnIndex(DataBaseHandler.COL_ITEM_PRICE))}"
-                textPrice.setPadding(5, 5, 5, 5)
+                val priceString = cursor.getString(cursor.getColumnIndex(DataBaseHandler.COL_ITEM_PRICE))
+                val priceDouble = priceString.toDouble()
+                val priceFormatted = NumberFormat.getCurrencyInstance().format((priceDouble / 100))
+                textPrice.text = priceFormatted
+                textPrice.setPadding(5, 10, 5, 10)
                 newTableRow.addView(textPrice, TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 0.25F))
+
+                newTableRow.setOnLongClickListener{
+                    val intent = Intent(this, InventoryEditItem::class.java).apply {
+                        putExtra(EXTRA_ITEM_ID, textID.text.toString())
+                    }
+                    startActivity(intent)
+
+                    return@setOnLongClickListener true
+                }
 
                 invTableLayout.addView(newTableRow, TableLayout.LayoutParams(TableLayout.LayoutParams.MATCH_PARENT, TableLayout.LayoutParams.MATCH_PARENT))
 
@@ -83,6 +107,7 @@ class Inventory : AppCompatActivity() {
         val invHeadRow = TableRow(this)
         invHeadRow.gravity = Gravity.CENTER
         invHeadRow.weightSum = 1.0F
+        invHeadRow.setBackgroundColor(ContextCompat.getColor(this, R.color.purple_200))
 
         val lblID = TextView(this)
         lblID.text = "ID"
