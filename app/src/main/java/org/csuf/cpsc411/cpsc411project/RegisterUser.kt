@@ -24,6 +24,10 @@ class RegisterUser : AppCompatActivity() {
 
             val registerSuccessful = db.insertUser(user)
 
+            var serverDB = ServerHandler()
+
+            serverDB.registerUser(user)
+
             if(registerSuccessful){
                 val intent = Intent(this, MainActivity::class.java)
                 startActivity(intent)

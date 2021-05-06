@@ -56,7 +56,7 @@ class DataBaseHandler(val context: Context) : SQLiteOpenHelper(context, DATABASE
     fun insertUser(user : User): Boolean {
         val db = this.writableDatabase
         val cv = ContentValues()
-        cv.put(COL_USERNAME, user.userName)
+        cv.put(COL_USERNAME, user.username)
         cv.put(COL_PASSWORD, user.password)
         val result = db.insert(USER_TABLE_NAME, null, cv)
         return if(result == (-1).toLong()) {
@@ -72,7 +72,7 @@ class DataBaseHandler(val context: Context) : SQLiteOpenHelper(context, DATABASE
     fun checkLogin(user: User) : Boolean {
         val db = this.readableDatabase
         val query = "Select * From $USER_TABLE_NAME " +
-                "Where $COL_USERNAME = '${user.userName}' " +
+                "Where $COL_USERNAME = '${user.username}' " +
                 "And $COL_PASSWORD = '${user.password}' "
 
         val result = db.rawQuery(query, null)

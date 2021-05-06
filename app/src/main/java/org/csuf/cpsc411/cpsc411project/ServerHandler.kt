@@ -57,6 +57,27 @@ class ServerHandler(): AppCompatActivity() {
 
     }
 
+    fun registerUser(user: User){
+        val jsonStr = Json.encodeToString(user)
+
+        Fuel.post("http://192.168.0.63:8888/Database/register").body(jsonStr).response(){
+            request, response, result ->
+            //Option 1
+            var (data, error) = result
+            if(data != null) {
+                val returnedResult = String(data!!)
+                Log.d("Web Service Log", "Data returned from REST server : ${returnedResult}")
+                this.login = Json.decodeFromString<Boolean>(returnedResult)
+                println("Web Service")
+            }
+            else {
+                Log.d("Web Service Log", "${error}")
+                println("Web Service Log $error")
+            }
+        }
+
+    }
+
     private fun resetCallBackReceived(){
         println("callBackReceived set to false")
         callBackReceived = false
