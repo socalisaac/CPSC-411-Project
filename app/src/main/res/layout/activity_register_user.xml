@@ -10,16 +10,16 @@
         android:id="@+id/ipAddressFeild2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="196dp"
+        android:backgroundTint="#2196F3"
         android:ems="10"
+        android:hint="IP Address"
         android:inputType="textPersonName"
-        app:layout_constraintBottom_toTopOf="@+id/userNameField"
+        app:layout_constraintBottom_toTopOf="@+id/registerUserName"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.829"
-        tools:hint="IP Address" />
+        app:layout_constraintTop_toBottomOf="@+id/textView5"
+        app:layout_constraintVertical_bias="0.594" />
 
     <TextView
         android:id="@+id/usernameTakenMessage"
@@ -70,7 +70,7 @@
         android:id="@+id/textView5"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Please enter a User Name, Password, and IP Address"
+        android:text="Please enter a Username, Password, and IP Address"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
