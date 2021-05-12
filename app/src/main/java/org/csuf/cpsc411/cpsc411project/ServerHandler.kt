@@ -71,6 +71,89 @@ class ServerHandler(): AppCompatActivity() {
 
     }
 
+    fun getItemsFromServer(context: SyncTables){
+
+        println("In Check login")
+
+        var connection = "http://$ipAddress:8888/Database/getItemsTable"
+
+        //"http://192.168.0.63:8888/Database/login"
+        Fuel.post(connection).response(){ request, response, result ->
+            //Option 1
+            var (data, error) = result
+            if(data != null) {
+                val returnedResult = String(data!!)
+                Log.d("Web Service Log", "Data returned from REST server : $returnedResult")
+                val list = Json.decodeFromString<MutableList<Item>>(returnedResult)
+                println("Web Service")
+
+                println("Got a list with size: ${list.size}")
+
+                context.syncWithLocalDB(list)
+            }
+            else {
+                Log.d("Web Service Log", "${error}")
+                println("Web Service Log $error")
+
+            }
+        }
+
+    }
+
+    fun addItem(item: Item, context: InventoryAddItem){ //fun registerUser(user: User, context: RegisterUser)
+        val jsonStr = Json.encodeToString(item)
+
+        println("In addItem")
+
+        var connection = "http://$ipAddress:8888/Database/addItem"
+
+        Fuel.post(connection).body(jsonStr).response(){ request, response, result ->
+            //Option 1
+            var (data, error) = result
+            if(data != null) {
+                val returnedResult = String(data!!)
+                Log.d("Web Service Log", "Data returned from REST server : ${returnedResult}")
+                val addItemGood = Json.decodeFromString<Int>(returnedResult)
+
+                val newItem = Item(addItemGood, item.itemName, item.itemQty, item.itemPrice)
+
+                context.addItemToLocalDB(newItem)
+            }
+            else {
+                Log.d("Web Service Log", "${error}")
+                println("Web Service Log $error")
+            }
+        }
+
+    }
+
+    fun upDateItem(item: Item, context: InventoryAddItem){ //fun registerUser(user: User, context: RegisterUser)
+        val jsonStr = Json.encodeToString(item)
+
+        println("In upDateItem")
+
+        var connection = "http://$ipAddress:8888/Database/addItem"
+
+        Fuel.post(connection).body(jsonStr).response(){ request, response, result ->
+            //Option 1
+            var (data, error) = result
+            if(data != null) {
+                val returnedResult = String(data!!)
+                Log.d("Web Service Log", "Data returned from REST server : ${returnedResult}")
+                val addItemGood = Json.decodeFromString<Int>(returnedResult)
+
+                val newItem = Item(addItemGood, item.itemName, item.itemQty, item.itemPrice)
+
+                context.addItemToLocalDB(newItem)
+            }
+            else {
+                Log.d("Web Service Log", "${error}")
+                println("Web Service Log $error")
+            }
+        }
+
+    }
+
     private fun resetCallBackReceived(){
         println("callBackReceived set to false")
         callBackReceived = false
