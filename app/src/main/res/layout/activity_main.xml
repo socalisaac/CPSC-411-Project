@@ -63,10 +63,9 @@
 
     <TextView
         android:id="@+id/wrongLoginTextView"
-        android:layout_width="117dp"
-        android:layout_height="39dp"
+        android:layout_width="161dp"
+        android:layout_height="40dp"
         android:gravity="center"
-        android:text="Incorrect login"
         android:textColor="#EE2234"
         android:visibility="invisible"
         app:layout_constraintBottom_toTopOf="@+id/loginButton"

@@ -10,7 +10,7 @@ import android.widget.TextView
 
 class MainActivity : AppCompatActivity() {
 
-    fun reportValidationResult(res :Boolean) {
+    fun reportValidationResult(res :Boolean, message : String) {
         val loginButton = findViewById<Button>(R.id.loginButton)
         val wrongLogin = findViewById<TextView>(R.id.wrongLoginTextView)
 
@@ -21,6 +21,7 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
         }
         else{
+            wrongLogin.text = message
             wrongLogin.visibility = View.VISIBLE
         } //userName.text.toString() == "Admin" &&  password.text.toString() == "1234"
 

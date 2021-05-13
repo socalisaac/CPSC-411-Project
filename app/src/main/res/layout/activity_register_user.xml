@@ -26,7 +26,6 @@
         android:layout_width="158dp"
         android:layout_height="47dp"
         android:gravity="center"
-        android:text="Username Already Taken"
         android:textAlignment="center"
         android:textColor="#EE2234"
         android:textSize="14sp"

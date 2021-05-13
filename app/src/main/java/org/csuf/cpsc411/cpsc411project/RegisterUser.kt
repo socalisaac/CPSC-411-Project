@@ -11,7 +11,7 @@ import android.widget.TextView
 
 class RegisterUser : AppCompatActivity() {
 
-    fun reportRegistrationResult(res :Boolean) {
+    fun reportRegistrationResult(res :Boolean, message: String) {
         val registerButton = findViewById<Button>(R.id.registerButton)
         val usernameMessage = findViewById<TextView>(R.id.usernameTakenMessage)
 
@@ -22,6 +22,7 @@ class RegisterUser : AppCompatActivity() {
         }
         else
         {
+            usernameMessage.text = message
             usernameMessage.visibility = View.VISIBLE
         }
 
@@ -42,6 +43,8 @@ class RegisterUser : AppCompatActivity() {
 
             val userName = findViewById<EditText>(R.id.registerUserName)
             val password = findViewById<EditText>(R.id.registerPassword)
+
+            ipAddress = ipAddressInput2.text.toString()
 
             val user = User(userName.text.toString(), password.text.toString())
 
