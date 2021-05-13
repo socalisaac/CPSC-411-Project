@@ -26,7 +26,7 @@ class ServerHandler(): AppCompatActivity() {
         var connection = "http://$ipAddress:8888/Database/login"
 
         //"http://192.168.0.63:8888/Database/login"
-        Fuel.post(connection).body(jsonStr).response(){ request, response, result ->
+        val test = Fuel.post(connection).body(jsonStr).response(){ request, response, result ->
             //Option 1
             var (data, error) = result
             if(data != null) {
@@ -34,15 +34,20 @@ class ServerHandler(): AppCompatActivity() {
                 Log.d("Web Service Log", "Data returned from REST server : ${returnedResult}")
                 this.login = Json.decodeFromString<Boolean>(returnedResult)
                 println("Web Service")
-                setCallBackReceived()
-                context.reportValidationResult(this.login)
+//                setCallBackReceived()
+                context.reportValidationResult(this.login, "Incorrect login")
             }
             else {
                 Log.d("Web Service Log", "${error}")
                 println("Web Service Log $error")
-                setCallBackReceived()
+//                setCallBackReceived()
             }
         }
+
+        if(!test.isDone){
+            context.reportValidationResult(false, "Incorrect IP Address")
+        }
+
 
     }
 
@@ -53,7 +58,7 @@ class ServerHandler(): AppCompatActivity() {
 
         var connection = "http://$ipAddress:8888/Database/register"
 
-        Fuel.post(connection).body(jsonStr).response(){ request, response, result ->
+        val test = Fuel.post(connection).body(jsonStr).response(){ request, response, result ->
             //Option 1
             var (data, error) = result
             if(data != null) {
@@ -61,12 +66,16 @@ class ServerHandler(): AppCompatActivity() {
                 Log.d("Web Service Log", "Data returned from REST server : ${returnedResult}")
                 val registerGood = Json.decodeFromString<Boolean>(returnedResult)
                 println("Web Service")
-                context.reportRegistrationResult(registerGood)
+                context.reportRegistrationResult(registerGood, "Username Already Taken")
             }
             else {
                 Log.d("Web Service Log", "${error}")
                 println("Web Service Log $error")
             }
+        }
+
+        if(!test.isDone){
+            context.reportRegistrationResult(false, "Incorrect IP Address")
         }
 
     }
