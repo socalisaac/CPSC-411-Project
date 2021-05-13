@@ -10,6 +10,12 @@ import android.widget.TextView
 
 class MainActivity : AppCompatActivity() {
 
+    /*
+        This function is called when the post message from the server is received.
+        It it takes in a Boolean if its true then Login was good, if its false either IP address is
+        wrong or login is bad.
+        The message will print what the error is.
+     */
     fun reportValidationResult(res :Boolean, message : String) {
         val loginButton = findViewById<Button>(R.id.loginButton)
         val wrongLogin = findViewById<TextView>(R.id.wrongLoginTextView)

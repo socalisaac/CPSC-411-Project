@@ -7,6 +7,11 @@ import android.widget.Button
 
 class SyncTables : AppCompatActivity() {
 
+    /*
+    This function is called when the post message from the server is received.
+    It it takes in a list of items from the server DB. It will then clear the current local DB items
+    table then add the list of items from the server DB to the Local DB.
+    */
     fun syncWithLocalDB(list : MutableList<Item>)
     {
         val db = DataBaseHandler(this)
