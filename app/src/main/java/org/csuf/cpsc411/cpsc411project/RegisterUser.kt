@@ -11,6 +11,12 @@ import android.widget.TextView
 
 class RegisterUser : AppCompatActivity() {
 
+    /*
+        This function is called when the post message from the server is received.
+        It it takes in a Boolean if its true then registration was good, if its false either IP
+        address is wrong or Username is taken.
+        The message will print what the error is
+     */
     fun reportRegistrationResult(res :Boolean, message: String) {
         val registerButton = findViewById<Button>(R.id.registerButton)
         val usernameMessage = findViewById<TextView>(R.id.usernameTakenMessage)
