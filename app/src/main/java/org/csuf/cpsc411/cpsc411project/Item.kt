@@ -1,7 +1,9 @@
 package org.csuf.cpsc411.cpsc411project
 
+import kotlinx.serialization.Serializable
 import java.math.BigDecimal
 
+@Serializable
 class Item {
     var itemId : Int = 0
     var itemName : String = "Default_Name"

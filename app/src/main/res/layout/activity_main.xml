@@ -6,6 +6,21 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
+    <EditText
+        android:id="@+id/ipAddressFeild"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="#2196F3"
+        android:ems="10"
+        android:hint="IP Address"
+        android:inputType="textPersonName"
+        app:layout_constraintBottom_toTopOf="@+id/loginButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.336" />
+
     <Button
         android:id="@+id/loginButton"
         android:layout_width="126dp"
@@ -23,14 +38,14 @@
         android:layout_height="wrap_content"
         android:backgroundTint="#2196F3"
         android:ems="10"
-        android:inputType="textPersonName"
         android:hint="User Name"
+        android:inputType="textPersonName"
         app:layout_constraintBottom_toTopOf="@+id/loginButton"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.473" />
+        app:layout_constraintVertical_bias="0.475" />
 
     <EditText
         android:id="@+id/passwordField"

@@ -1,43 +1,32 @@
 package org.csuf.cpsc411.cpsc411project
 
-import android.content.Context
-import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
-
+import android.net.wifi.WifiManager
+import android.text.format.Formatter
 import android.util.Log
-import android.view.View
-import android.widget.Button
-import android.widget.TextView
-import androidx.core.app.NotificationCompatSideChannelService
-import androidx.core.content.ContextCompat.startActivity
+import androidx.appcompat.app.AppCompatActivity
 import com.github.kittinunf.fuel.Fuel
-import com.github.kittinunf.fuel.core.await
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers.IO
-import kotlinx.coroutines.async
-import kotlinx.coroutines.launch
-import kotlinx.serialization.Serializable
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
-import java.util.logging.Handler
-import kotlin.math.log
+
+var ipAddress = ""
 
 class ServerHandler(): AppCompatActivity() {
 
     var callBackReceived = false
     var login: Boolean = false
 
-    fun checkServerLogin(user: User, context : MainActivity){
+    fun checkServerLogin(user: User, context: MainActivity){
 
         println("In Check login")
         val jsonStr = Json.encodeToString(user)
 
         var login: Boolean = false
 
-        println("About to send the post request. ")
-        Fuel.post("http://192.168.0.63:8888/Database/login").body(jsonStr).response(){
-                request, response, result ->
+        var connection = "http://$ipAddress:8888/Database/login"
+
+        //"http://192.168.0.63:8888/Database/login"
+        Fuel.post(connection).body(jsonStr).response(){ request, response, result ->
             //Option 1
             var (data, error) = result
             if(data != null) {
@@ -57,18 +46,105 @@ class ServerHandler(): AppCompatActivity() {
 
     }
 
-    fun registerUser(user: User){
+    fun registerUser(user: User, context: RegisterUser){ //fun registerUser(user: User, context: RegisterUser)
         val jsonStr = Json.encodeToString(user)
 
-        Fuel.post("http://192.168.0.63:8888/Database/register").body(jsonStr).response(){
-            request, response, result ->
+        println("In register")
+
+        var connection = "http://$ipAddress:8888/Database/register"
+
+        Fuel.post(connection).body(jsonStr).response(){ request, response, result ->
             //Option 1
             var (data, error) = result
             if(data != null) {
                 val returnedResult = String(data!!)
                 Log.d("Web Service Log", "Data returned from REST server : ${returnedResult}")
-                this.login = Json.decodeFromString<Boolean>(returnedResult)
+                val registerGood = Json.decodeFromString<Boolean>(returnedResult)
                 println("Web Service")
+                context.reportRegistrationResult(registerGood)
+            }
+            else {
+                Log.d("Web Service Log", "${error}")
+                println("Web Service Log $error")
+            }
+        }
+
+    }
+
+    fun getItemsFromServer(context: SyncTables){
+
+        println("In Check login")
+
+        var connection = "http://$ipAddress:8888/Database/getItemsTable"
+
+        //"http://192.168.0.63:8888/Database/login"
+        Fuel.post(connection).response(){ request, response, result ->
+            //Option 1
+            var (data, error) = result
+            if(data != null) {
+                val returnedResult = String(data!!)
+                Log.d("Web Service Log", "Data returned from REST server : $returnedResult")
+                val list = Json.decodeFromString<MutableList<Item>>(returnedResult)
+                println("Web Service")
+
+                println("Got a list with size: ${list.size}")
+
+                context.syncWithLocalDB(list)
+            }
+            else {
+                Log.d("Web Service Log", "${error}")
+                println("Web Service Log $error")
+
+            }
+        }
+
+    }
+
+    fun addItem(item: Item, context: InventoryAddItem){ //fun registerUser(user: User, context: RegisterUser)
+        val jsonStr = Json.encodeToString(item)
+
+        println("In addItem")
+
+        var connection = "http://$ipAddress:8888/Database/addItem"
+
+        Fuel.post(connection).body(jsonStr).response(){ request, response, result ->
+            //Option 1
+            var (data, error) = result
+            if(data != null) {
+                val returnedResult = String(data!!)
+                Log.d("Web Service Log", "Data returned from REST server : ${returnedResult}")
+                val addItemGood = Json.decodeFromString<Int>(returnedResult)
+
+                val newItem = Item(addItemGood, item.itemName, item.itemQty, item.itemPrice)
+
+                context.addItemToLocalDB(newItem)
+            }
+            else {
+                Log.d("Web Service Log", "${error}")
+                println("Web Service Log $error")
+            }
+        }
+
+    }
+
+    fun upDateItem(item: Item, context: InventoryAddItem){ //fun registerUser(user: User, context: RegisterUser)
+        val jsonStr = Json.encodeToString(item)
+
+        println("In upDateItem")
+
+        var connection = "http://$ipAddress:8888/Database/addItem"
+
+        Fuel.post(connection).body(jsonStr).response(){ request, response, result ->
+            //Option 1
+            var (data, error) = result
+            if(data != null) {
+                val returnedResult = String(data!!)
+                Log.d("Web Service Log", "Data returned from REST server : ${returnedResult}")
+                val addItemGood = Json.decodeFromString<Int>(returnedResult)
+
+                val newItem = Item(addItemGood, item.itemName, item.itemQty, item.itemPrice)
+
+                context.addItemToLocalDB(newItem)
             }
             else {
                 Log.d("Web Service Log", "${error}")

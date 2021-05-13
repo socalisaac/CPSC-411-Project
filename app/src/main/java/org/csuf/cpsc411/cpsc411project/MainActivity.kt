@@ -33,11 +33,19 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         val loginButton = findViewById<Button>(R.id.loginButton)
+        val ipAddressInput = findViewById<EditText>(R.id.ipAddressFeild)
+
+        if(ipAddress != "")
+            ipAddressInput.setText(ipAddress)
+
 
         loginButton.setOnClickListener{
 
             val userName = findViewById<EditText>(R.id.userNameField)
             val password = findViewById<EditText>(R.id.passwordField)
+
+
+            ipAddress = ipAddressInput.text.toString()
 
             loginButton.text = "Validating"
             loginButton.isEnabled = false
