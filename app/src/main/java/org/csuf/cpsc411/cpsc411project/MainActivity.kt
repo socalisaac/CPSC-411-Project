@@ -21,7 +21,7 @@ class MainActivity : AppCompatActivity() {
         val wrongLogin = findViewById<TextView>(R.id.wrongLoginTextView)
 
         if(res){
-            wrongLogin.visibility = View.GONE
+            wrongLogin.visibility = View.INVISIBLE
 
             val intent = Intent(this, MainMenu::class.java)
             startActivity(intent)

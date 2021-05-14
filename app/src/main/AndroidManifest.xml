@@ -12,7 +12,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.CPSC411Project"
         android:usesCleartextTraffic="true">
-        <activity android:name=".SyncTables"></activity>
+        <activity android:name=".ChangeLoginInfo"></activity>
+        <activity android:name=".SyncTables" />
         <activity android:name=".RegisterUser" />
         <activity android:name=".Reports" />
         <activity android:name=".SalesHistory" />

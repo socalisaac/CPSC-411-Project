@@ -13,4 +13,10 @@ class User {
         this.password = password
     }
 
+    constructor(userID: Int, userName: String, password: String ){
+        this.id = userID
+        this.username = userName
+        this.password = password
+    }
+
 }
