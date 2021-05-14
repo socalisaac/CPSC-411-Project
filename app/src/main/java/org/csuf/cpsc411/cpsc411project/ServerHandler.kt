@@ -80,6 +80,31 @@ class ServerHandler(): AppCompatActivity() {
 
     }
 
+    fun upDateLoginInfo(user: User, context: ChangeLoginInfo){ //fun registerUser(user: User, context: RegisterUser)
+        val jsonStr = Json.encodeToString(user)
+
+        println("In upDateLoginInfo")
+
+        var connection = "http://$ipAddress:8888/Database/updateLoginInfo"
+
+        val test = Fuel.post(connection).body(jsonStr).response(){ request, response, result ->
+            //Option 1
+            var (data, error) = result
+            if(data != null) {
+                val returnedResult = String(data!!)
+                Log.d("Web Service Log", "Data returned from REST server : ${returnedResult}")
+                val registerGood = Json.decodeFromString<Boolean>(returnedResult)
+                println("Web Service")
+                context.confirmLoginInfoChange(registerGood)
+            }
+            else {
+                Log.d("Web Service Log", "${error}")
+                println("Web Service Log $error")
+            }
+        }
+
+    }
+
     fun getItemsFromServer(context: SyncTables){
 
         println("In Check login")
@@ -163,6 +188,31 @@ class ServerHandler(): AppCompatActivity() {
 
     }
 
+    fun checkServerLoginInfo(user: User, context: ChangeLoginInfo) {
+        println("In Check login info")
+        val jsonStr = Json.encodeToString(user)
+
+        var connection = "http://$ipAddress:8888/Database/checkLoginInfo"
+
+        //"http://192.168.0.63:8888/Database/login"
+        val test = Fuel.post(connection).body(jsonStr).response(){ request, response, result ->
+            //Option 1
+            var (data, error) = result
+            if(data != null) {
+                val returnedResult = String(data!!)
+                Log.d("Web Service Log", "Data returned from REST server : ${returnedResult}")
+                val userID = Json.decodeFromString<Int>(returnedResult)
+                println("Web Service")
+                context.checkLoginInfo(userID)
+            }
+            else {
+                Log.d("Web Service Log", "${error}")
+                println("Web Service Log $error")
+            }
+        }
+
+    }
+
     private fun resetCallBackReceived(){
         println("callBackReceived set to false")
         callBackReceived = false
@@ -178,4 +228,6 @@ class ServerHandler(): AppCompatActivity() {
             println("Here")
         }
     }
+
+
 }
