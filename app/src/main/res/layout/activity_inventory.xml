@@ -59,20 +59,27 @@
                 android:id="@+id/inventoryBack"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:layout_marginLeft="10dp"
-                android:layout_marginRight="80dp"
+                android:layout_marginRight="60dp"
+                android:layout_weight="1"
                 android:paddingTop="10dp"
                 android:paddingBottom="15dp"
-                android:text="Menu"/>
+                android:text="Menu" />
+
+            <Button
+                android:id="@+id/syncButton"
+                android:layout_width="wrap_content"
+                android:layout_height="56dp"
+                android:layout_weight="1"
+                android:text="Sync" />
 
             <Button
                 android:id="@+id/inventoryMenu"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:layout_marginLeft="80dp"
+                android:layout_marginLeft="60dp"
                 android:layout_marginRight="10dp"
+                android:layout_weight="1"
                 android:paddingTop="10dp"
                 android:paddingBottom="15dp"
                 android:text="Edit" />

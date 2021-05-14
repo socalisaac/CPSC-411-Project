@@ -2,13 +2,18 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="org.csuf.cpsc411.cpsc411project">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.CPSC411Project">
+        android:theme="@style/Theme.CPSC411Project"
+        android:usesCleartextTraffic="true">
+        <activity android:name=".ChangeLoginInfo"></activity>
+        <activity android:name=".SyncTables" />
         <activity android:name=".RegisterUser" />
         <activity android:name=".Reports" />
         <activity android:name=".SalesHistory" />

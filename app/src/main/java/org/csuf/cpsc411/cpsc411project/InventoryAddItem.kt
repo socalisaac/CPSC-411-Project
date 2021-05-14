@@ -13,6 +13,20 @@ import android.widget.*
 import java.text.NumberFormat
 
 class InventoryAddItem : AppCompatActivity() {
+
+    /*
+     This function is called when the post message from the server is received.
+     It it takes in a item, if the item's ID is not -1 then adding item was good in the server.
+     If item's ID is -1 then adding item was not good on the server. So if its good add it to local
+     DB, if its not good don't add it to local DB
+    */
+    fun addItemToLocalDB(item: Item) {
+        if (item.itemId != -1) {
+            val db = DataBaseHandler(this)
+            db.insertItem(item)
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_inventory_add_item)
@@ -56,6 +70,8 @@ class InventoryAddItem : AppCompatActivity() {
 
         val addItem = findViewById<Button>(R.id.addItem)
 
+
+
         addItem.setOnClickListener{
             val itemNameString = itemName.text.toString()
             val itemQtyString = itemQty.text.toString()
@@ -67,8 +83,13 @@ class InventoryAddItem : AppCompatActivity() {
                 priceCleanString.trim().isEmpty() -> Toast.makeText(this, "Please enter a price", Toast.LENGTH_SHORT).show()
                 else -> {
                     val item = Item(itemNameString, itemQtyString.toInt(), priceCleanString.toInt())
-                    val db = DataBaseHandler(this)
-                    db.insertItem(item)
+//                    val db = DataBaseHandler(this)
+//                    db.insertItem(item)
+
+                    var serverDB = ServerHandler()
+
+                    serverDB.addItem(item, this)
+
                     itemName.text.clear()
                     itemQty.text.clear()
                     itemPrice.text.clear()

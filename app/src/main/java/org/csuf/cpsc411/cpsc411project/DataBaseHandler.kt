@@ -56,7 +56,7 @@ class DataBaseHandler(val context: Context) : SQLiteOpenHelper(context, DATABASE
     fun insertUser(user : User): Boolean {
         val db = this.writableDatabase
         val cv = ContentValues()
-        cv.put(COL_USERNAME, user.userName)
+        cv.put(COL_USERNAME, user.username)
         cv.put(COL_PASSWORD, user.password)
         val result = db.insert(USER_TABLE_NAME, null, cv)
         return if(result == (-1).toLong()) {
@@ -72,7 +72,7 @@ class DataBaseHandler(val context: Context) : SQLiteOpenHelper(context, DATABASE
     fun checkLogin(user: User) : Boolean {
         val db = this.readableDatabase
         val query = "Select * From $USER_TABLE_NAME " +
-                "Where $COL_USERNAME = '${user.userName}' " +
+                "Where $COL_USERNAME = '${user.username}' " +
                 "And $COL_PASSWORD = '${user.password}' "
 
         val result = db.rawQuery(query, null)
@@ -84,6 +84,7 @@ class DataBaseHandler(val context: Context) : SQLiteOpenHelper(context, DATABASE
     fun insertItem(item: Item): Boolean {
         val db = this.writableDatabase
         val cv = ContentValues()
+        cv.put(COL_ITEM_ID, item.itemId)
         cv.put(COL_ITEM_NAME, item.itemName)
         cv.put(COL_ITEM_QTY, item.itemQty)
         cv.put(COL_ITEM_PRICE, item.itemPrice)
@@ -151,7 +152,7 @@ class DataBaseHandler(val context: Context) : SQLiteOpenHelper(context, DATABASE
     private fun createUsersTable(db: SQLiteDatabase?){
         val createUserTable = "CREATE TABLE $USER_TABLE_NAME " +
                 "(" +
-                "$COL_USER_ID INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                "$COL_USER_ID INTEGER PRIMARY KEY, " +
                 "$COL_USERNAME VARCHAR(256), " +
                 "$COL_PASSWORD VARCHAR(256)" +
                 ")"
@@ -162,7 +163,7 @@ class DataBaseHandler(val context: Context) : SQLiteOpenHelper(context, DATABASE
     private fun createInventoryTable(db: SQLiteDatabase?){
         val createInventoryTable = "CREATE TABLE $INVENTORY_TABLE_NAME " +
                 "(" +
-                "$COL_ITEM_ID INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                "$COL_ITEM_ID INTEGER PRIMARY KEY, " +
                 "$COL_ITEM_NAME VARCHAR(256), " +
                 "$COL_ITEM_QTY INTEGER, " +
                 "$COL_ITEM_PRICE INTEGER " +

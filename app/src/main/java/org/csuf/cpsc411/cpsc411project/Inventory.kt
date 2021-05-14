@@ -30,6 +30,13 @@ class Inventory : AppCompatActivity() {
             startActivity(intent)
         }
 
+        val syncButton = findViewById<Button>(R.id.syncButton)
+
+        syncButton.setOnClickListener{
+            val intent = Intent(this, SyncTables::class.java)
+            startActivity(intent)
+        }
+
         refreshTable()
     }
 
