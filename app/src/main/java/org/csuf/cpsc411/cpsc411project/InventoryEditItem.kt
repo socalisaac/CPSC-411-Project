@@ -9,6 +9,12 @@ import android.widget.*
 import java.text.NumberFormat
 
 class InventoryEditItem : AppCompatActivity() {
+
+    fun editItemInLocalDB(item: Item){
+        val db = DataBaseHandler(this)
+        db.updateItem(item)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_inventory_edit_item)
@@ -90,8 +96,10 @@ class InventoryEditItem : AppCompatActivity() {
             }
             else {
                 val item = Item(itemID.toInt(), itemNameString, itemQtyString.toInt(), itemPriceString.toInt())
-                val db = DataBaseHandler(this)
-                db.updateItem(item)
+
+                var serverDB = ServerHandler()
+                serverDB.editItem(item, this)
+
             }
         }
 

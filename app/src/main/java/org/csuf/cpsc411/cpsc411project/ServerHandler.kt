@@ -161,12 +161,12 @@ class ServerHandler(): AppCompatActivity() {
 
     }
 
-    fun upDateItem(item: Item, context: InventoryAddItem){ //fun registerUser(user: User, context: RegisterUser)
+    fun editItem(item: Item, context: InventoryEditItem){ //fun registerUser(user: User, context: RegisterUser)
         val jsonStr = Json.encodeToString(item)
 
-        println("In upDateItem")
+        println("In editItem")
 
-        var connection = "http://$ipAddress:8888/Database/addItem"
+        var connection = "http://$ipAddress:8888/Database/editItem"
 
         Fuel.post(connection).body(jsonStr).response(){ request, response, result ->
             //Option 1
@@ -174,11 +174,15 @@ class ServerHandler(): AppCompatActivity() {
             if(data != null) {
                 val returnedResult = String(data!!)
                 Log.d("Web Service Log", "Data returned from REST server : ${returnedResult}")
-                val addItemGood = Json.decodeFromString<Int>(returnedResult)
+                val addItemGood = Json.decodeFromString<Boolean>(returnedResult)
 
-                val newItem = Item(addItemGood, item.itemName, item.itemQty, item.itemPrice)
+                if(!addItemGood){
+                    println("Edit item was not good")
+                }
 
-                context.addItemToLocalDB(newItem)
+                val newItem = Item(item.itemId, item.itemName, item.itemQty, item.itemPrice)
+
+                context.editItemInLocalDB(newItem)
             }
             else {
                 Log.d("Web Service Log", "${error}")
@@ -208,6 +212,35 @@ class ServerHandler(): AppCompatActivity() {
             else {
                 Log.d("Web Service Log", "${error}")
                 println("Web Service Log $error")
+            }
+        }
+
+    }
+
+    fun clearInventoryTable(context: InventoryClear){
+
+        println("In clearInventoryTable")
+
+        var connection = "http://$ipAddress:8888/Database/clearItemsTable"
+
+        //"http://192.168.0.63:8888/Database/login"
+        Fuel.post(connection).response(){ request, response, result ->
+            //Option 1
+            var (data, error) = result
+            if(data != null) {
+                val returnedResult = String(data!!)
+                Log.d("Web Service Log", "Data returned from REST server : $returnedResult")
+                //val clearGood = Json.decodeFromString<Boolean>(returnedResult)
+                println("Web Service")
+
+               // println("table clear was: $clearGood")
+
+                context.clearlocalInventoryTable()
+            }
+            else {
+                Log.d("Web Service Log", "${error}")
+                println("Web Service Log $error")
+
             }
         }
 
