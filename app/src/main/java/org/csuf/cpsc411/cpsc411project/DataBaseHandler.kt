@@ -182,7 +182,7 @@ class DataBaseHandler(val context: Context) : SQLiteOpenHelper(context, DATABASE
     }
 
     private fun createTransactionTable(db: SQLiteDatabase?){
-        val createInventoryTable = "CREATE TABLE $INVENTORY_TABLE_NAME " +
+        val createInventoryTable = "CREATE TABLE $TRANSACTION_TABLE_NAME " +
                 "(" +
                 "$COL_TRANSACTION_ID INTEGER PRIMARY KEY, " +
                 "$COL_ITEM_SOLD_NAME VARCHAR(256), " +
