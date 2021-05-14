@@ -45,8 +45,8 @@ class Inventory : AppCompatActivity() {
         val invTableLayout = findViewById<TableLayout>(R.id.inventoryTableLayout)
         invTableLayout.removeAllViews()
 
-        val invHeadRow = createHeaderRow()
-        invTableLayout.addView(invHeadRow, TableLayout.LayoutParams(TableLayout.LayoutParams.MATCH_PARENT, TableLayout.LayoutParams.MATCH_PARENT))
+        val headerRow = createHeaderRow()
+        invTableLayout.addView(headerRow, TableLayout.LayoutParams(TableLayout.LayoutParams.MATCH_PARENT, TableLayout.LayoutParams.MATCH_PARENT))
 
         val db = DataBaseHandler(this)
         val cursor = db.getAllInventoryData()
