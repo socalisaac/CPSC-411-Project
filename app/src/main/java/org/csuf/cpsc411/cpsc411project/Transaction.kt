@@ -1,7 +1,9 @@
 package org.csuf.cpsc411.cpsc411project
 
-class Transaction {
+import kotlinx.serialization.Serializable
 
+@Serializable
+class Transaction {
     var id : Int = 0
     var itemSoldName : String = ""
     var itemSoldQty : Int = 0
