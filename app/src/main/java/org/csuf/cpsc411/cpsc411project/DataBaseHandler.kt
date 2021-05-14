@@ -40,11 +40,19 @@ class DataBaseHandler(val context: Context) : SQLiteOpenHelper(context, DATABASE
         const val COL_ITEM_QTY = "ItemQty"
         const val COL_ITEM_PRICE = "ItemPrice"
 
+        const val TRANSACTION_TABLE_NAME = "Transactions"
+        const val COL_TRANSACTION_ID = "TransactionID"
+        const val COL_ITEM_SOLD_NAME = "ItemSoldName"
+        const val COL_ITEM_SOLD_QTY = "ItemSoldQty"
+        const val COL_REVENUE = "Revenue"
+        const val COL_DATE_OF_TRANSACTION = "DateOfTransaction"
+
     }
 
     override fun onCreate(db: SQLiteDatabase?) {
         createUsersTable(db)
         createInventoryTable(db)
+        createTransactionTable(db)
     }
 
     override fun onUpgrade(db: SQLiteDatabase?, oldVersion: Int, newVersion: Int) {
@@ -171,6 +179,20 @@ class DataBaseHandler(val context: Context) : SQLiteOpenHelper(context, DATABASE
 
         db?.execSQL(createInventoryTable)
         Toast.makeText(context, "Inventory table cleared", Toast.LENGTH_SHORT).show()
+    }
+
+    private fun createTransactionTable(db: SQLiteDatabase?){
+        val createInventoryTable = "CREATE TABLE $INVENTORY_TABLE_NAME " +
+                "(" +
+                "$COL_TRANSACTION_ID INTEGER PRIMARY KEY, " +
+                "$COL_ITEM_SOLD_NAME VARCHAR(256), " +
+                "$COL_ITEM_SOLD_QTY INTEGER, " +
+                "$COL_REVENUE INTEGER, " +
+                "$COL_DATE_OF_TRANSACTION VARCHAR(256) " +
+                ")"
+
+        db?.execSQL(createInventoryTable)
+        Toast.makeText(context, "Transaction table cleared", Toast.LENGTH_SHORT).show()
     }
 }
 
