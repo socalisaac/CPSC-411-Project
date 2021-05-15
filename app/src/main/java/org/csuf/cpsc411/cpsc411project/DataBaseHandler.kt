@@ -143,6 +143,15 @@ class DataBaseHandler(val context: Context) : SQLiteOpenHelper(context, DATABASE
         }
     }
 
+    fun getItem(cursor: Cursor): Item {
+        val id = cursor.getString(cursor.getColumnIndex(COL_ITEM_ID)).toInt()
+        val name = cursor.getString(cursor.getColumnIndex(COL_ITEM_NAME))
+        val qty = cursor.getString(cursor.getColumnIndex(COL_ITEM_QTY)).toInt()
+        val price = cursor.getString(cursor.getColumnIndex(COL_ITEM_PRICE)).toInt()
+
+        return Item(id, name, qty, price)
+    }
+
     fun checkEntryExists(table: String, column: String, value: String): Boolean {
         val cursor = getEntry(table, column, value)
         if(cursor.count <= 0){
