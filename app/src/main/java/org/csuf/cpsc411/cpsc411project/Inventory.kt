@@ -24,8 +24,8 @@ class Inventory : AppCompatActivity() {
             db.insertItemWithoutToast(it)
         }
 
-        this.refreshTable()
         this.refreshList()
+        this.refreshTable()
     }
 
     private lateinit var invTableLayout: TableLayout
@@ -42,6 +42,7 @@ class Inventory : AppCompatActivity() {
 
         invTableLayout = findViewById(R.id.inventoryTableLayout)
 
+        refreshList()
         refreshTable()
 
         val inventoryBack = findViewById<Button>(R.id.inventoryBack)
@@ -61,6 +62,7 @@ class Inventory : AppCompatActivity() {
             val intent = Intent(this, SyncTables::class.java)
             startActivity(intent)
         }
+
 
         val sortIDText = findViewById<TextView>(R.id.headerID)
         sortIDText.setOnClickListener(View.OnClickListener{
