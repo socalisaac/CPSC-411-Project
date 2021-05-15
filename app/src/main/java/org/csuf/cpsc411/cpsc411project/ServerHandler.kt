@@ -134,6 +134,35 @@ class ServerHandler(): AppCompatActivity() {
 
     }
 
+    fun getItemsFromServer(context: Inventory){
+
+        println("In Check login")
+
+        var connection = "http://$ipAddress:8888/Database/getItemsTable"
+
+        //"http://192.168.0.63:8888/Database/login"
+        Fuel.post(connection).response(){ request, response, result ->
+            //Option 1
+            var (data, error) = result
+            if(data != null) {
+                val returnedResult = String(data!!)
+                Log.d("Web Service Log", "Data returned from REST server : $returnedResult")
+                val list = Json.decodeFromString<MutableList<Item>>(returnedResult)
+                println("Web Service")
+
+                println("Got a list with size: ${list.size}")
+
+                context.syncWithLocalDB(list)
+            }
+            else {
+                Log.d("Web Service Log", "${error}")
+                println("Web Service Log $error")
+
+            }
+        }
+
+    }
+
     fun addItem(item: Item, context: InventoryAddItem){ //fun registerUser(user: User, context: RegisterUser)
         val jsonStr = Json.encodeToString(item)
 

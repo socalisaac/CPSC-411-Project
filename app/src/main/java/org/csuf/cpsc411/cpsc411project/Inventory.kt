@@ -12,6 +12,21 @@ import java.text.NumberFormat
 const val EXTRA_ITEM_ID = "org.csuf.cpsc411.cpsc411project.ITEMID"
 
 class Inventory : AppCompatActivity() {
+
+    fun syncWithLocalDB(list : MutableList<Item>)
+    {
+        val db = DataBaseHandler(this)
+        db.refreshInventoryTable()
+
+        println("cleared and about to add items")
+
+        list.forEach{
+            db.insertItemWithoutToast(it)
+        }
+
+        this.refreshTable()
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_inventory)
@@ -44,7 +59,10 @@ class Inventory : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
 
-        refreshTable()
+        println("Syncing Tables")
+        var serverDB = ServerHandler()
+        serverDB.getItemsFromServer(this)
+
     }
 
     // Clears table and refills it with new info after printing the header row first

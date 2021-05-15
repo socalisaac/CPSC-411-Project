@@ -107,6 +107,20 @@ class DataBaseHandler(val context: Context) : SQLiteOpenHelper(context, DATABASE
         }
     }
 
+
+    // Adds new item into inventory table
+    fun insertItemWithoutToast(item: Item): Boolean {
+        val db = this.writableDatabase
+        val cv = ContentValues()
+        cv.put(COL_ITEM_ID, item.itemId)
+        cv.put(COL_ITEM_NAME, item.itemName)
+        cv.put(COL_ITEM_QTY, item.itemQty)
+        cv.put(COL_ITEM_PRICE, item.itemPrice)
+        val result = db.insert(INVENTORY_TABLE_NAME, null, cv)
+        return result != (-1).toLong()
+    }
+
+
     fun updateItem(item: Item): Boolean {
         if(!checkEntryExists(INVENTORY_TABLE_NAME, COL_ITEM_ID, item.itemId.toString())){
             Toast.makeText(context, "Update failed error: Item not found", Toast.LENGTH_SHORT).show()
@@ -154,7 +168,12 @@ class DataBaseHandler(val context: Context) : SQLiteOpenHelper(context, DATABASE
     fun clearInventoryTable(){
         val db = this.writableDatabase
         db?.execSQL("DROP TABLE IF EXISTS $INVENTORY_TABLE_NAME")
-        createInventoryTable(db)
+        createInventoryTable(db, "Inventory table cleared")
+    }
+    fun refreshInventoryTable(){
+        val db = this.writableDatabase
+        db?.execSQL("DROP TABLE IF EXISTS $INVENTORY_TABLE_NAME")
+        createInventoryTable(db, "Inventory table refreshed")
     }
 
     private fun createUsersTable(db: SQLiteDatabase?){
@@ -168,6 +187,18 @@ class DataBaseHandler(val context: Context) : SQLiteOpenHelper(context, DATABASE
         db?.execSQL(createUserTable)
     }
 
+    private fun createInventoryTable(db: SQLiteDatabase?, message: String){
+        val createInventoryTable = "CREATE TABLE $INVENTORY_TABLE_NAME " +
+                "(" +
+                "$COL_ITEM_ID INTEGER PRIMARY KEY, " +
+                "$COL_ITEM_NAME VARCHAR(256), " +
+                "$COL_ITEM_QTY INTEGER, " +
+                "$COL_ITEM_PRICE INTEGER " +
+                ")"
+
+        db?.execSQL(createInventoryTable)
+        Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+    }
     private fun createInventoryTable(db: SQLiteDatabase?){
         val createInventoryTable = "CREATE TABLE $INVENTORY_TABLE_NAME " +
                 "(" +
@@ -178,7 +209,6 @@ class DataBaseHandler(val context: Context) : SQLiteOpenHelper(context, DATABASE
                 ")"
 
         db?.execSQL(createInventoryTable)
-        Toast.makeText(context, "Inventory table cleared", Toast.LENGTH_SHORT).show()
     }
 
     private fun createTransactionTable(db: SQLiteDatabase?){
