@@ -15,12 +15,12 @@ class SyncTables : AppCompatActivity() {
     fun syncWithLocalDB(list : MutableList<Item>)
     {
         val db = DataBaseHandler(this)
-        db.clearInventoryTable()
+        db.refreshInventoryTable()
 
         println("cleared and about to add items")
 
         list.forEach{
-            db.insertItem(it)
+            db.insertItemWithoutToast(it)
         }
 
         val intent = Intent(this, Inventory::class.java)

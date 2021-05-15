@@ -11,12 +11,30 @@ import java.text.NumberFormat
 const val EXTRA_ITEM_ID = "org.csuf.cpsc411.cpsc411project.ITEMID"
 
 class Inventory : AppCompatActivity() {
+
+
+    fun syncWithLocalDB(list : MutableList<Item>)
+    {
+        val db = DataBaseHandler(this)
+        db.refreshInventoryTable()
+
+        println("cleared and about to add items")
+
+        list.forEach{
+            db.insertItemWithoutToast(it)
+        }
+
+        this.refreshTable()
+        this.refreshList()
+    }
+
     private lateinit var invTableLayout: TableLayout
     private val itemList = mutableListOf<Item>()
     var sortedAscID = true
     var sortedAscName = false
     var sortedAscQty = false
     var sortedAscPrice = false
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -108,8 +126,11 @@ class Inventory : AppCompatActivity() {
     // Should be called each time the page is reopened to refresh/update the list
     override fun onResume() {
         super.onResume()
-        refreshList()
-        refreshTable()
+
+
+        println("Syncing Tables")
+        var serverDB = ServerHandler()
+        serverDB.getItemsFromServer(this)
     }
 
     private fun refreshList() {
