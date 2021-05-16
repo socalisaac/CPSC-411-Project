@@ -122,7 +122,7 @@ class DataBaseHandler(val context: Context) : SQLiteOpenHelper(context, DATABASE
 
 
     fun updateItem(item: Item): Boolean {
-        if(!checkEntryExists(INVENTORY_TABLE_NAME, COL_ITEM_ID, item.itemId.toString())){
+        if(!checkItemExists(item)){
             Toast.makeText(context, "Update failed error: Item not found", Toast.LENGTH_SHORT).show()
             return false
         }
@@ -152,14 +152,12 @@ class DataBaseHandler(val context: Context) : SQLiteOpenHelper(context, DATABASE
         return Item(id, name, qty, price)
     }
 
-    fun checkEntryExists(table: String, column: String, value: String): Boolean {
-        val cursor = getEntry(table, column, value)
-        if(cursor.count <= 0){
-            cursor.close()
-            return false
-        }
-        cursor.close()
-        return true
+    fun checkItemExists(item: Item): Boolean {
+        val db = this.readableDatabase
+        val query = "Select * From $INVENTORY_TABLE_NAME " +
+                "Where $COL_ITEM_NAME = '${item.itemName}' "
+        val result = db.rawQuery(query, null)
+        return result.moveToFirst()
     }
 
     fun getEntry(table: String, column: String, value: String): Cursor {
@@ -192,6 +190,12 @@ class DataBaseHandler(val context: Context) : SQLiteOpenHelper(context, DATABASE
         cv.put(COL_ITEM_SOLD_NAME, transaction.itemSoldName)
         cv.put(COL_ITEM_SOLD_QTY, transaction.itemSoldQty)
         cv.put(COL_REVENUE, transaction.revenue)
+
+        val item = getItem(getEntry(TRANSACTION_TABLE_NAME, COL_ITEM_SOLD_NAME, transaction.itemSoldName))
+        item.itemQty -= transaction.itemSoldQty
+        updateItem(item)
+
+        /**
         val result = db.insert(TRANSACTION_TABLE_NAME, null, cv)
         return if(result == (-1).toLong()) {
             Toast.makeText(context, "Failed to add transaction", Toast.LENGTH_SHORT).show()
@@ -201,6 +205,8 @@ class DataBaseHandler(val context: Context) : SQLiteOpenHelper(context, DATABASE
             Toast.makeText(context, "Successfully added transaction", Toast.LENGTH_SHORT).show()
             true
         }
+        **/
+        return true
     }
 
 

@@ -83,16 +83,20 @@ class InventoryAddItem : AppCompatActivity() {
                 priceCleanString.trim().isEmpty() -> Toast.makeText(this, "Please enter a price", Toast.LENGTH_SHORT).show()
                 else -> {
                     val item = Item(itemNameString, itemQtyString.toInt(), priceCleanString.toInt())
-//                    val db = DataBaseHandler(this)
+                    val db = DataBaseHandler(this)
+                    if(db.checkItemExists(item)){
+                        Toast.makeText(this, "Item already exists", Toast.LENGTH_SHORT).show()
 //                    db.insertItem(item)
+                    }
+                    else{
+                        var serverDB = ServerHandler()
 
-                    var serverDB = ServerHandler()
+                        serverDB.addItem(item, this)
 
-                    serverDB.addItem(item, this)
-
-                    itemName.text.clear()
-                    itemQty.text.clear()
-                    itemPrice.text.clear()
+                        itemName.text.clear()
+                        itemQty.text.clear()
+                        itemPrice.text.clear()
+                    }
                 }
             }
         }

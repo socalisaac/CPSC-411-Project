@@ -96,10 +96,13 @@ class InventoryEditItem : AppCompatActivity() {
             }
             else {
                 val item = Item(itemID.toInt(), itemNameString, itemQtyString.toInt(), itemPriceString.toInt())
-
-                var serverDB = ServerHandler()
-                serverDB.editItem(item, this)
-
+                if(db.checkItemExists(item)){
+                    Toast.makeText(this, "Item already exists", Toast.LENGTH_SHORT).show()
+                }
+                else {
+                    var serverDB = ServerHandler()
+                    serverDB.editItem(item, this)
+                }
             }
         }
 

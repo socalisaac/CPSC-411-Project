@@ -96,9 +96,12 @@ class MakeTransaction : AppCompatActivity() {
             val revenue = totalPrice.text.toString().replace("""[$,.]""".toRegex(), "").toLong()
             val date = System.currentTimeMillis()
 
+            val item: Item? = itemList.find { it.itemName == name}
+
             when {
                 name.trim().isEmpty() -> Toast.makeText(this, "Please enter the item name", Toast.LENGTH_SHORT).show()
                 qty.trim().isEmpty() -> Toast.makeText(this, "Please enter a quantity", Toast.LENGTH_SHORT).show()
+                item != null && qty.toInt() > item.itemQty -> Toast.makeText(this, "Quantity exceeds amount in inventory", Toast.LENGTH_SHORT).show()
                 else -> {
                     val transaction = Transaction(name, qty.toInt(), revenue, date)
                     val db = DataBaseHandler(this)
