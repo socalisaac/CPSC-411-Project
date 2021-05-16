@@ -1,7 +1,5 @@
 package org.csuf.cpsc411.cpsc411project
 
-import android.net.wifi.WifiManager
-import android.text.format.Formatter
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.github.kittinunf.fuel.Fuel
@@ -41,14 +39,9 @@ class ServerHandler(): AppCompatActivity() {
                 Log.d("Web Service Log", "${error}")
                 println("Web Service Log $error")
 //                setCallBackReceived()
+                context.reportValidationResult(false, "Incorrect IP Address")
             }
         }
-
-        if(!test.isDone){
-            context.reportValidationResult(false, "Incorrect IP Address")
-        }
-
-
     }
 
     fun registerUser(user: User, context: RegisterUser){ //fun registerUser(user: User, context: RegisterUser)
@@ -71,13 +64,9 @@ class ServerHandler(): AppCompatActivity() {
             else {
                 Log.d("Web Service Log", "${error}")
                 println("Web Service Log $error")
+                context.reportRegistrationResult(false, "Incorrect IP Address")
             }
         }
-
-        if(!test.isDone){
-            context.reportRegistrationResult(false, "Incorrect IP Address")
-        }
-
     }
 
     fun upDateLoginInfo(user: User, context: ChangeLoginInfo){ //fun registerUser(user: User, context: RegisterUser)
@@ -212,6 +201,33 @@ class ServerHandler(): AppCompatActivity() {
                 val newItem = Item(item.itemId, item.itemName, item.itemQty, item.itemPrice)
 
                 context.editItemInLocalDB(newItem)
+            }
+            else {
+                Log.d("Web Service Log", "${error}")
+                println("Web Service Log $error")
+            }
+        }
+
+    }
+
+    fun addTransaction(transaction: Transaction, context: MakeTransaction){ //fun registerUser(user: User, context: RegisterUser)
+        val jsonStr = Json.encodeToString(transaction)
+
+        println("In addTransaction")
+
+        var connection = "http://$ipAddress:8888/Database/addTransaction"
+
+        Fuel.post(connection).body(jsonStr).response(){ request, response, result ->
+            //Option 1
+            var (data, error) = result
+            if(data != null) {
+                val returnedResult = String(data!!)
+                Log.d("Web Service Log", "Data returned from REST server : ${returnedResult}")
+                val transactionID = Json.decodeFromString<Int>(returnedResult)
+
+                val transaction = Transaction(transactionID, transaction.itemSoldName, transaction.itemSoldQty, transaction.revenue, transaction.date)
+
+                context.addTransactionToLocalDB(transaction)
             }
             else {
                 Log.d("Web Service Log", "${error}")

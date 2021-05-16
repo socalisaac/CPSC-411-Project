@@ -13,6 +13,18 @@ import java.time.LocalDateTime
 class MakeTransaction : AppCompatActivity() {
     private val itemList = mutableListOf<Item>()
 
+    fun addTransactionToLocalDB(transaction: Transaction) {
+        if(transaction.id != -1){
+            val db = DataBaseHandler(this)
+            db.addTransaction(transaction)
+
+            val itemNameAutoField = findViewById<AutoCompleteTextView>(R.id.itemNameField)
+            itemNameAutoField.text.clear()
+            val itemQtyField = findViewById<EditText>(R.id.itemQtyField)
+            itemQtyField.text.clear()
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_make_transaction)
@@ -104,15 +116,8 @@ class MakeTransaction : AppCompatActivity() {
                 item != null && qty.toInt() > item.itemQty -> Toast.makeText(this, "Quantity exceeds amount in inventory", Toast.LENGTH_SHORT).show()
                 else -> {
                     val transaction = Transaction(name, qty.toInt(), revenue, date)
-                    val db = DataBaseHandler(this)
-                    db.addTransaction(transaction)
-                    /**
                     val serverDB = ServerHandler()
-
                     serverDB.addTransaction(transaction, this)
-                    **/
-                    itemNameAutoField.text.clear()
-                    itemQtyField.text.clear()
                 }
             }
         }
