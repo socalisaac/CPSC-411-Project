@@ -39,6 +39,7 @@ class RegisterUser : AppCompatActivity() {
         setContentView(R.layout.activity_register_user)
 
         val registerSubmitButton = findViewById<Button>(R.id.registerSubmitButton)
+        val registerBackButton = findViewById<Button>(R.id.registerBackButton)
 
         val ipAddressInput2 = findViewById<EditText>(R.id.ipAddressFeild2)
 
@@ -58,6 +59,12 @@ class RegisterUser : AppCompatActivity() {
 
             serverDB.registerUser(user, this)
 
+        }
+
+        registerBackButton.setOnClickListener{
+
+            val intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
         }
     }
 }

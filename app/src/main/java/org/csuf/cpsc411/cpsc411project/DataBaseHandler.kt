@@ -185,6 +185,25 @@ class DataBaseHandler(val context: Context) : SQLiteOpenHelper(context, DATABASE
         createInventoryTable(db, "Inventory table refreshed")
     }
 
+    fun addTransaction(transaction: Transaction): Boolean {
+        val db = this.writableDatabase
+        val cv = ContentValues()
+        cv.put(COL_TRANSACTION_ID, transaction.id)
+        cv.put(COL_ITEM_SOLD_NAME, transaction.itemSoldName)
+        cv.put(COL_ITEM_SOLD_QTY, transaction.itemSoldQty)
+        cv.put(COL_REVENUE, transaction.revenue)
+        val result = db.insert(TRANSACTION_TABLE_NAME, null, cv)
+        return if(result == (-1).toLong()) {
+            Toast.makeText(context, "Failed to add transaction", Toast.LENGTH_SHORT).show()
+            false
+        }
+        else {
+            Toast.makeText(context, "Successfully added transaction", Toast.LENGTH_SHORT).show()
+            true
+        }
+    }
+
+
     private fun createUsersTable(db: SQLiteDatabase?){
         val createUserTable = "CREATE TABLE $USER_TABLE_NAME " +
                 "(" +
@@ -208,6 +227,7 @@ class DataBaseHandler(val context: Context) : SQLiteOpenHelper(context, DATABASE
         db?.execSQL(createInventoryTable)
         Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
     }
+
     private fun createInventoryTable(db: SQLiteDatabase?){
         val createInventoryTable = "CREATE TABLE $INVENTORY_TABLE_NAME " +
                 "(" +
@@ -221,17 +241,17 @@ class DataBaseHandler(val context: Context) : SQLiteOpenHelper(context, DATABASE
     }
 
     private fun createTransactionTable(db: SQLiteDatabase?){
-        val createInventoryTable = "CREATE TABLE $TRANSACTION_TABLE_NAME " +
+        val createTransactionTable = "CREATE TABLE $TRANSACTION_TABLE_NAME " +
                 "(" +
                 "$COL_TRANSACTION_ID INTEGER PRIMARY KEY, " +
                 "$COL_ITEM_SOLD_NAME VARCHAR(256), " +
                 "$COL_ITEM_SOLD_QTY INTEGER, " +
                 "$COL_REVENUE INTEGER, " +
-                "$COL_DATE_OF_TRANSACTION VARCHAR(256) " +
+                "$COL_DATE_OF_TRANSACTION INTEGER " +
                 ")"
 
-        db?.execSQL(createInventoryTable)
-        Toast.makeText(context, "Transaction table cleared", Toast.LENGTH_SHORT).show()
+        db?.execSQL(createTransactionTable)
+        Toast.makeText(context, "Transaction table created", Toast.LENGTH_SHORT).show()
     }
 }
 

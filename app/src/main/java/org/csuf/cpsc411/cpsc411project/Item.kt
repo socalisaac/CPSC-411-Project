@@ -23,5 +23,4 @@ class Item {
         this.itemQty = itemQty
         this.itemPrice = itemPrice
     }
-
 }

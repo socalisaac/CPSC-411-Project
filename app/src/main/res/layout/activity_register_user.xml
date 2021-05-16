@@ -12,8 +12,9 @@
         android:layout_height="wrap_content"
         android:backgroundTint="#2196F3"
         android:ems="10"
-        android:hint="IP Address"
+        android:hint="IP Address (10.0.2.2)"
         android:inputType="textPersonName"
+        android:text="10.0.2.2"
         app:layout_constraintBottom_toTopOf="@+id/registerUserName"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
@@ -78,12 +79,26 @@
 
     <Button
         android:id="@+id/registerSubmitButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="118dp"
+        android:layout_height="53dp"
         android:text="Register"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/registerPassword" />
+        app:layout_constraintTop_toBottomOf="@+id/registerPassword"
+        app:layout_constraintVertical_bias="0.286" />
+
+    <Button
+        android:id="@+id/registerBackButton"
+        android:layout_width="116dp"
+        android:layout_height="56dp"
+        android:text="Back"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/registerSubmitButton"
+        app:layout_constraintVertical_bias="0.101" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
