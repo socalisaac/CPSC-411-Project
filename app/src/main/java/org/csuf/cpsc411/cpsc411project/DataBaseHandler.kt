@@ -122,10 +122,10 @@ class DataBaseHandler(val context: Context) : SQLiteOpenHelper(context, DATABASE
 
 
     fun updateItem(item: Item): Boolean {
-        if(!checkItemExists(item)){
-            Toast.makeText(context, "Update failed error: Item not found", Toast.LENGTH_SHORT).show()
-            return false
-        }
+//        if(!checkItemExists(item)){
+//            Toast.makeText(context, "Update failed error: Item not found", Toast.LENGTH_SHORT).show()
+//            return false
+//        }
         val db = this.writableDatabase
         val cv = ContentValues()
         cv.put(COL_ITEM_NAME, item.itemName)
@@ -155,14 +155,15 @@ class DataBaseHandler(val context: Context) : SQLiteOpenHelper(context, DATABASE
     fun checkItemExists(item: Item): Boolean {
         val db = this.readableDatabase
         val query = "Select * From $INVENTORY_TABLE_NAME " +
-                "Where $COL_ITEM_NAME = '${item.itemName}' "
+                "Where $COL_ITEM_NAME = '${item.itemName}' AND " +
+                "$COL_ITEM_ID != '${item.itemId}'"
         val result = db.rawQuery(query, null)
         return result.moveToFirst()
     }
 
     fun getEntry(table: String, column: String, value: String): Cursor {
         val db = this.readableDatabase
-        val query = "Select * from $table Where $column = $value"
+        val query = "Select * from $table Where $column = '$value'"
         return db.rawQuery(query, null)
     }
 
