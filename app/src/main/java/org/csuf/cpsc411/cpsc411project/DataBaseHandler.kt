@@ -148,7 +148,6 @@ class DataBaseHandler(val context: Context) : SQLiteOpenHelper(context, DATABASE
         val name = cursor.getString(cursor.getColumnIndex(COL_ITEM_NAME))
         val qty = cursor.getString(cursor.getColumnIndex(COL_ITEM_QTY)).toInt()
         val price = cursor.getString(cursor.getColumnIndex(COL_ITEM_PRICE)).toInt()
-
         return Item(id, name, qty, price)
     }
 
@@ -184,18 +183,31 @@ class DataBaseHandler(val context: Context) : SQLiteOpenHelper(context, DATABASE
         createInventoryTable(db, "Inventory table refreshed")
     }
 
-    fun addTransaction(transaction: Transaction): Boolean {
-        val db = this.writableDatabase
+    fun addTransaction(transaction: Transaction): Item {
+        //val db = this.writableDatabase
+        /**
         val cv = ContentValues()
         cv.put(COL_TRANSACTION_ID, transaction.id)
         cv.put(COL_ITEM_SOLD_NAME, transaction.itemSoldName)
         cv.put(COL_ITEM_SOLD_QTY, transaction.itemSoldQty)
         cv.put(COL_REVENUE, transaction.revenue)
+        **/
 
-        val item = getItem(getEntry(TRANSACTION_TABLE_NAME, COL_ITEM_SOLD_NAME, transaction.itemSoldName))
-        item.itemQty -= transaction.itemSoldQty
-        updateItem(item)
+        val cursor = transaction.itemSoldName.let { getEntry(INVENTORY_TABLE_NAME, COL_ITEM_NAME, transaction.itemSoldName) }
+        if(cursor.moveToFirst() && cursor.count >= 1) {
+            val itemID = cursor.getInt(cursor.getColumnIndex(COL_ITEM_ID))
+            val itemName = cursor.getString(cursor.getColumnIndex(COL_ITEM_NAME))
+            val itemQty = cursor.getInt(cursor.getColumnIndex(COL_ITEM_QTY))
+            val itemPrice = cursor.getInt(cursor.getColumnIndex(COL_ITEM_PRICE))
+            val item = Item(itemID, itemName, itemQty, itemPrice)
+            item.itemQty -= transaction.itemSoldQty
+            updateItem(item)
 
+            return item
+        }
+        else{
+            return Item(-1, "Name", 0, 0)
+        }
         /**
         val result = db.insert(TRANSACTION_TABLE_NAME, null, cv)
         return if(result == (-1).toLong()) {
@@ -207,7 +219,6 @@ class DataBaseHandler(val context: Context) : SQLiteOpenHelper(context, DATABASE
             true
         }
         **/
-        return true
     }
 
 

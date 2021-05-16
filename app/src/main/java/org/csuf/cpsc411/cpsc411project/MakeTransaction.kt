@@ -16,7 +16,9 @@ class MakeTransaction : AppCompatActivity() {
     fun addTransactionToLocalDB(transaction: Transaction) {
         if(transaction.id != -1){
             val db = DataBaseHandler(this)
-            db.addTransaction(transaction)
+            val item = db.addTransaction(transaction)
+            val serverDB = ServerHandler()
+            serverDB.editItem(item)
 
             val itemNameAutoField = findViewById<AutoCompleteTextView>(R.id.itemNameField)
             itemNameAutoField.text.clear()

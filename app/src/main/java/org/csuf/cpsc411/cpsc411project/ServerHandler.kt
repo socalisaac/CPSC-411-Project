@@ -210,6 +210,33 @@ class ServerHandler(): AppCompatActivity() {
 
     }
 
+    fun editItem(item: Item){ //fun registerUser(user: User, context: RegisterUser)
+        val jsonStr = Json.encodeToString(item)
+
+        println("In editItem")
+
+        var connection = "http://$ipAddress:8888/Database/editItem"
+
+        Fuel.post(connection).body(jsonStr).response(){ request, response, result ->
+            //Option 1
+            var (data, error) = result
+            if(data != null) {
+                val returnedResult = String(data!!)
+                Log.d("Web Service Log", "Data returned from REST server : ${returnedResult}")
+                val addItemGood = Json.decodeFromString<Boolean>(returnedResult)
+
+                if(!addItemGood){
+                    println("Edit item was not good")
+                }
+            }
+            else {
+                Log.d("Web Service Log", "${error}")
+                println("Web Service Log $error")
+            }
+        }
+
+    }
+
     fun addTransaction(transaction: Transaction, context: MakeTransaction){ //fun registerUser(user: User, context: RegisterUser)
         val jsonStr = Json.encodeToString(transaction)
 
