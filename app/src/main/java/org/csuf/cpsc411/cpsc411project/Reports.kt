@@ -3,18 +3,22 @@ package org.csuf.cpsc411.cpsc411project
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.provider.ContactsContract
 import android.widget.*
 import androidx.core.content.ContextCompat
+import org.w3c.dom.Text
 import java.text.NumberFormat
-import java.text.SimpleDateFormat
 import java.util.*
 
 class Reports : AppCompatActivity() {
 
     private lateinit var reportsTableLayout: TableLayout
+    private lateinit var revenueTotalText: TextView
+    private lateinit var qtyTotalText: TextView
     private var salesHistoryList = mutableListOf<Transaction>()
     private var reportsList = mutableListOf<ReportEntry>()
+    var sortedAscName = false
+    var sortedAscQty = false
+    var sortedAscRevenue = false
 
     fun syncListWithServerDB(list: MutableList<Transaction>){
         salesHistoryList.clear()
@@ -23,6 +27,7 @@ class Reports : AppCompatActivity() {
         }
         Toast.makeText(this, "Sales History refreshed", Toast.LENGTH_SHORT).show()
         fillReportsList()
+        updateTotals()
         refreshTable()
     }
 
@@ -35,10 +40,10 @@ class Reports : AppCompatActivity() {
         val sortNameText = findViewById<TextView>(R.id.headerName)
         val sortQtyText = findViewById<TextView>(R.id.headerQtySold)
         val sortRevenueText = findViewById<TextView>(R.id.headerRevenue)
-        val reportsTableLayout = findViewById<TableLayout>(R.id.reportsTableLayout)
+        reportsTableLayout = findViewById(R.id.reportsTableLayout)
 
-        val revenueTotalText = findViewById<TextView>(R.id.totalRevenueValue)
-        val qtyTotalText = findViewById<TextView>(R.id.totalQtySoldValue)
+        revenueTotalText = findViewById(R.id.totalRevenueValue)
+        qtyTotalText = findViewById(R.id.totalQtySoldValue)
 
         val serverDB = ServerHandler()
         serverDB.getTransactionFromServer(this)
@@ -48,6 +53,48 @@ class Reports : AppCompatActivity() {
             startActivity(intent)
         }
 
+        syncButton.setOnClickListener{
+            serverDB.getTransactionFromServer(this)
+        }
+
+        sortNameText.setOnClickListener {
+            if (sortedAscName) {
+                reportsList.sortByDescending { it.itemName }
+                Toast.makeText(this, "Desc Name", Toast.LENGTH_SHORT).show()
+                sortedAscName = !sortedAscName
+            } else {
+                reportsList.sortBy { it.itemName }
+                Toast.makeText(this, "Asc Name", Toast.LENGTH_SHORT).show()
+                sortedAscName = !sortedAscName
+            }
+            refreshTable()
+        }
+
+        sortQtyText.setOnClickListener {
+            if (sortedAscQty) {
+                reportsList.sortByDescending { it.totalQty }
+                Toast.makeText(this, "Desc Qty", Toast.LENGTH_SHORT).show()
+                sortedAscQty = !sortedAscQty
+            } else {
+                reportsList.sortBy { it.totalQty }
+                Toast.makeText(this, "Asc Qty", Toast.LENGTH_SHORT).show()
+                sortedAscQty = !sortedAscQty
+            }
+            refreshTable()
+        }
+
+        sortRevenueText.setOnClickListener {
+            if (sortedAscRevenue) {
+                reportsList.sortByDescending { it.totalRevenue }
+                Toast.makeText(this, "Desc Revenue", Toast.LENGTH_SHORT).show()
+                sortedAscRevenue = !sortedAscRevenue
+            } else {
+                reportsList.sortBy { it.totalRevenue }
+                Toast.makeText(this, "Asc Revenue", Toast.LENGTH_SHORT).show()
+                sortedAscRevenue = !sortedAscRevenue
+            }
+            refreshTable()
+        }
     }
 
     private fun refreshTable() {
@@ -87,6 +134,7 @@ class Reports : AppCompatActivity() {
     }
 
     private fun fillReportsList() {
+        reportsList.clear()
         salesHistoryList.forEach { sales ->
             val index = searchList(sales.itemSoldName)
             if(index == -1){
@@ -101,12 +149,29 @@ class Reports : AppCompatActivity() {
 
     private fun searchList(name: String): Int {
         var index = 0
-        salesHistoryList.forEach {
+        reportsList.forEach {
             if(salesHistoryList[index].itemSoldName == name)
                 return index
             else
                 index++
         }
         return -1
+    }
+
+    private fun updateTotals() {
+        revenueTotalText.text = "$0.00"
+        qtyTotalText.text = "0"
+
+        var totalRevenue = 0L
+        reportsList.forEach {
+            totalRevenue += it.totalRevenue
+        }
+        revenueTotalText.text = NumberFormat.getCurrencyInstance().format((totalRevenue.toDouble() / 100))
+
+        var totalQtySold = 0
+        reportsList.forEach {
+            totalQtySold += it.totalQty
+        }
+        qtyTotalText.text = totalQtySold.toString()
     }
 }

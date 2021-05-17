@@ -8,10 +8,15 @@ import android.text.TextWatcher
 import android.widget.*
 import java.math.BigDecimal
 import java.text.NumberFormat
-import java.time.LocalDateTime
 
 class MakeTransaction : AppCompatActivity() {
     private val itemList = mutableListOf<Item>()
+    private lateinit var itemNameAutoField: AutoCompleteTextView
+    private lateinit var itemQtyField: EditText
+    private lateinit var itemQtyMax: TextView
+    private lateinit var itemPrice: TextView
+    private lateinit var totalPrice: TextView
+
 
     fun addTransactionToLocalDB(transaction: Transaction) {
         if(transaction.id != -1){
@@ -20,10 +25,12 @@ class MakeTransaction : AppCompatActivity() {
             val serverDB = ServerHandler()
             serverDB.editItem(item)
 
-            val itemNameAutoField = findViewById<AutoCompleteTextView>(R.id.itemNameField)
+            refreshItemList()
             itemNameAutoField.text.clear()
-            val itemQtyField = findViewById<EditText>(R.id.itemQtyField)
             itemQtyField.text.clear()
+            itemQtyMax.text = "0"
+            itemPrice.text = "$0.00"
+            totalPrice.text = "$0.00"
 
             Toast.makeText(this, "Successfully added transaction ${transaction.id}", Toast.LENGTH_SHORT).show()
         }
@@ -35,16 +42,17 @@ class MakeTransaction : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_make_transaction)
 
-        fillItemList()
+        refreshItemList()
 
+        itemNameAutoField = findViewById(R.id.itemNameField)
+        itemQtyField = findViewById(R.id.itemQtyField)
+        itemQtyMax = findViewById(R.id.itemQtyMax)
+        itemPrice = findViewById(R.id.itemPriceValue)
+        totalPrice = findViewById<TextView>(R.id.totalPriceValue)
         val itemNameErrorText = findViewById<TextView>(R.id.itemNameErrorText)
-        val itemPrice = findViewById<TextView>(R.id.itemPriceValue)
-        val totalPrice = findViewById<TextView>(R.id.totalPriceValue)
-        val itemQtyField = findViewById<EditText>(R.id.itemQtyField)
         val makeTransaction = findViewById<Button>(R.id.makeTransactionButton)
         val back = findViewById<Button>(R.id.makeTransactionBack)
 
-        val itemNameAutoField = findViewById<AutoCompleteTextView>(R.id.itemNameField)
         val adapter = ArrayAdapter(this, android.R.layout.simple_dropdown_item_1line, getNamesList())
         itemNameAutoField.setAdapter(adapter)
 
@@ -81,10 +89,14 @@ class MakeTransaction : AppCompatActivity() {
                         totalPrice.text = totalFormatted
                     }
 
+                    itemQtyMax.text = item.itemQty.toString()
                     itemValid = true
                     itemNameErrorText.visibility = TextView.INVISIBLE
                 }
                 else{
+                    itemQtyMax.text = "0"
+                    itemPrice.text = "$0.00"
+                    totalPrice.text = "$0.00"
                     itemValid = false
                     itemNameErrorText.visibility = TextView.VISIBLE
                 }
@@ -129,11 +141,12 @@ class MakeTransaction : AppCompatActivity() {
         }
     }
 
-    private fun fillItemList() {
+    private fun refreshItemList() {
         val db = DataBaseHandler(this)
         val cursor = db.getAllInventoryData()
 
         if (cursor!!.moveToFirst() && cursor.count >= 1) {
+            itemList.clear()
             do {
                 itemList.add(db.getItem(cursor))
             } while (cursor.moveToNext())

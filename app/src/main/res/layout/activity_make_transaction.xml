@@ -35,8 +35,7 @@
             android:ems="19"
             android:hint="Apples"
             android:inputType="textPersonName"
-            android:completionThreshold="1"
-            android:dropDownHeight="200dp"/>
+            android:completionThreshold="1"/>
 
         <TextView
             android:id="@+id/itemNameErrorText"
@@ -55,16 +54,39 @@
             android:layout_marginTop="5dp"
             android:text="Quantity" />
 
-        <EditText
-            android:id="@+id/itemQtyField"
+        <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="5dp"
-            android:layout_marginTop="0dp"
-            android:backgroundTint="#2196F3"
-            android:ems="5"
-            android:hint="0"
-            android:inputType="numberSigned" />
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:id="@+id/itemQtyField"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="0dp"
+                android:backgroundTint="#2196F3"
+                android:ems="5"
+                android:hint="0"
+                android:inputType="numberSigned" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="/"
+                android:textSize="20dp"
+                android:paddingHorizontal="5dp">
+            </TextView>
+
+            <TextView
+                android:id="@+id/itemQtyMax"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0"
+                android:textSize="20dp"
+                android:paddingHorizontal="5dp">
+            </TextView>
+
+        </LinearLayout>
 
         <TextView
             android:id="@+id/itemPriceText"
