@@ -120,6 +120,17 @@ class DataBaseHandler(val context: Context) : SQLiteOpenHelper(context, DATABASE
         return result != (-1).toLong()
     }
 
+    fun insertTransactionWithoutToast(transaction: Transaction): Boolean {
+        val db = this.writableDatabase
+        val cv = ContentValues()
+        cv.put(COL_ITEM_ID, transaction.id)
+        cv.put(COL_ITEM_NAME, transaction.itemSoldName)
+        cv.put(COL_ITEM_QTY, transaction.itemSoldQty)
+        cv.put(COL_ITEM_PRICE, transaction.revenue)
+        val result = db.insert(INVENTORY_TABLE_NAME, null, cv)
+        return result != (-1).toLong()
+    }
+
 
     fun updateItem(item: Item): Boolean {
 //        if(!checkItemExists(item)){
@@ -133,14 +144,7 @@ class DataBaseHandler(val context: Context) : SQLiteOpenHelper(context, DATABASE
         cv.put(COL_ITEM_PRICE, item.itemPrice)
         val whereClause = "$COL_ITEM_ID = ${item.itemId}"
         val result = db.update(INVENTORY_TABLE_NAME, cv, whereClause, null)
-        return if(result <= 0) {
-            Toast.makeText(context, "Failed to update ${item.itemName}", Toast.LENGTH_SHORT).show()
-            false
-        }
-        else {
-            Toast.makeText(context, "Successfully updated ${item.itemName}", Toast.LENGTH_SHORT).show()
-            true
-        }
+        return result > 0
     }
 
     fun getItem(cursor: Cursor): Item {
@@ -184,17 +188,8 @@ class DataBaseHandler(val context: Context) : SQLiteOpenHelper(context, DATABASE
     }
 
     fun addTransaction(transaction: Transaction): Item {
-        //val db = this.writableDatabase
-        /**
-        val cv = ContentValues()
-        cv.put(COL_TRANSACTION_ID, transaction.id)
-        cv.put(COL_ITEM_SOLD_NAME, transaction.itemSoldName)
-        cv.put(COL_ITEM_SOLD_QTY, transaction.itemSoldQty)
-        cv.put(COL_REVENUE, transaction.revenue)
-        **/
-
         val cursor = transaction.itemSoldName.let { getEntry(INVENTORY_TABLE_NAME, COL_ITEM_NAME, transaction.itemSoldName) }
-        if(cursor.moveToFirst() && cursor.count >= 1) {
+        return if(cursor.moveToFirst() && cursor.count >= 1) {
             val itemID = cursor.getInt(cursor.getColumnIndex(COL_ITEM_ID))
             val itemName = cursor.getString(cursor.getColumnIndex(COL_ITEM_NAME))
             val itemQty = cursor.getInt(cursor.getColumnIndex(COL_ITEM_QTY))
@@ -203,22 +198,11 @@ class DataBaseHandler(val context: Context) : SQLiteOpenHelper(context, DATABASE
             item.itemQty -= transaction.itemSoldQty
             updateItem(item)
 
-            return item
+            item
         }
         else{
-            return Item(-1, "Name", 0, 0)
+            Item(-1, "Name", 0, 0)
         }
-        /**
-        val result = db.insert(TRANSACTION_TABLE_NAME, null, cv)
-        return if(result == (-1).toLong()) {
-            Toast.makeText(context, "Failed to add transaction", Toast.LENGTH_SHORT).show()
-            false
-        }
-        else {
-            Toast.makeText(context, "Successfully added transaction", Toast.LENGTH_SHORT).show()
-            true
-        }
-        **/
     }
 
 

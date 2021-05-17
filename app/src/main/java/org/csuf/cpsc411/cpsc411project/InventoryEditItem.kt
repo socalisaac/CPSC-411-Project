@@ -12,7 +12,10 @@ class InventoryEditItem : AppCompatActivity() {
 
     fun editItemInLocalDB(item: Item){
         val db = DataBaseHandler(this)
-        db.updateItem(item)
+        if(db.updateItem(item))
+            Toast.makeText(this, "Successfully updated ${item.itemName}", Toast.LENGTH_SHORT).show()
+        else
+            Toast.makeText(this, "Error updating ${item.itemName}", Toast.LENGTH_SHORT).show()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

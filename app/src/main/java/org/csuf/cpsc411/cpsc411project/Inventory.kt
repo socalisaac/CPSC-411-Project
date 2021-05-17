@@ -42,29 +42,35 @@ class Inventory : AppCompatActivity() {
 
         invTableLayout = findViewById(R.id.inventoryTableLayout)
 
+        val inventoryBack = findViewById<Button>(R.id.inventoryBack)
+        val syncButton = findViewById<Button>(R.id.syncButton)
+        val inventoryMenu = findViewById<Button>(R.id.inventoryMenu)
+
+        val sortIDText = findViewById<TextView>(R.id.headerID)
+        val sortNameText = findViewById<TextView>(R.id.headerName)
+        val sortQtyText = findViewById<TextView>(R.id.headerQty)
+        val sortPriceText = findViewById<TextView>(R.id.headerPrice)
+
+
         refreshList()
         refreshTable()
 
-        val inventoryBack = findViewById<Button>(R.id.inventoryBack)
         inventoryBack.setOnClickListener{
             val intent = Intent(this, MainMenu::class.java)
             startActivity(intent)
         }
 
-        val inventoryMenu = findViewById<Button>(R.id.inventoryMenu)
         inventoryMenu.setOnClickListener{
             val intent = Intent(this, InventoryMenu::class.java)
             startActivity(intent)
         }
 
-        val syncButton = findViewById<Button>(R.id.syncButton)
         syncButton.setOnClickListener{
             val intent = Intent(this, SyncTables::class.java)
             startActivity(intent)
         }
 
 
-        val sortIDText = findViewById<TextView>(R.id.headerID)
         sortIDText.setOnClickListener(View.OnClickListener{
             if(sortedAscID) {
                 itemList.sortByDescending { it.itemId }
@@ -79,7 +85,6 @@ class Inventory : AppCompatActivity() {
             refreshTable()
         })
 
-        val sortNameText = findViewById<TextView>(R.id.headerName)
         sortNameText.setOnClickListener(View.OnClickListener{
             if(sortedAscName) {
                 itemList.sortByDescending { it.itemName }
@@ -94,7 +99,6 @@ class Inventory : AppCompatActivity() {
             refreshTable()
         })
 
-        val sortQtyText = findViewById<TextView>(R.id.headerQty)
         sortQtyText.setOnClickListener(View.OnClickListener{
             if(sortedAscQty) {
                 itemList.sortByDescending { it.itemQty }
@@ -109,7 +113,6 @@ class Inventory : AppCompatActivity() {
             refreshTable()
         })
 
-        val sortPriceText = findViewById<TextView>(R.id.headerPrice)
         sortPriceText.setOnClickListener(View.OnClickListener{
             if(sortedAscPrice) {
                 itemList.sortByDescending { it.itemPrice }

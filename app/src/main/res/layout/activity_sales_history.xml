@@ -34,7 +34,8 @@
                 android:text="ID"
                 android:paddingVertical="5dp"
                 android:paddingLeft="5dp"
-                android:layout_weight="0.1">
+                android:layout_weight="0.05"
+                android:clickable="true">
             </TextView>
 
             <TextView
@@ -43,7 +44,8 @@
                 android:id="@+id/headerName"
                 android:text="Item Name"
                 android:paddingVertical="5dp"
-                android:layout_weight="0.6">
+                android:layout_weight="0.3"
+                android:clickable="true">
             </TextView>
 
             <TextView
@@ -52,16 +54,29 @@
                 android:id="@+id/headerQtySold"
                 android:text="Qty Sold"
                 android:paddingVertical="5dp"
-                android:layout_weight="0.15">
+                android:layout_weight="0.05"
+                android:clickable="true">
             </TextView>
 
             <TextView
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
                 android:id="@+id/headerRevenue"
-                android:text="Revenue on Sale"
+                android:text="Revenue"
                 android:paddingVertical="5dp"
-                android:layout_weight="0.">
+                android:layout_weight="0.1"
+                android:clickable="true">
+            </TextView>
+
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:id="@+id/headerDate"
+                android:text="Date"
+                android:gravity="center"
+                android:paddingVertical="5dp"
+                android:layout_weight="0.2"
+                android:clickable="true">
             </TextView>
 
         </LinearLayout>
@@ -109,7 +124,7 @@
                 android:text="Sync" />
 
             <Button
-                android:id="@+id/salesHistoryMenu"
+                android:id="@+id/salesHistoryClear"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="60dp"
@@ -117,7 +132,7 @@
                 android:layout_weight="1"
                 android:paddingTop="10dp"
                 android:paddingBottom="15dp"
-                android:text="Edit" />
+                android:text="Clear" />
         </LinearLayout>
 
     </LinearLayout>

@@ -237,6 +237,34 @@ class ServerHandler(): AppCompatActivity() {
 
     }
 
+    fun getTransactionFromServer(context: SalesHistory){
+
+        println("In Check login")
+
+        var connection = "http://$ipAddress:8888/Database/getTransactionTable"
+
+        Fuel.post(connection).response{ request, response, result ->
+            //Option 1
+            var (data, error) = result
+            if(data != null) {
+                val returnedResult = String(data!!)
+                Log.d("Web Service Log", "Data returned from REST server : $returnedResult")
+                val list = Json.decodeFromString<MutableList<Transaction>>(returnedResult)
+                println("Web Service")
+
+                println("Got transaction list with size: ${list.size}")
+
+                context.syncListWithServerDB(list)
+            }
+            else {
+                Log.d("Web Service Log", "${error}")
+                println("Web Service Log $error")
+
+            }
+        }
+
+    }
+
     fun addTransaction(transaction: Transaction, context: MakeTransaction){ //fun registerUser(user: User, context: RegisterUser)
         val jsonStr = Json.encodeToString(transaction)
 
@@ -311,6 +339,33 @@ class ServerHandler(): AppCompatActivity() {
             }
             else {
                 Log.d("Web Service Log", "${error}")
+                println("Web Service Log $error")
+
+            }
+        }
+
+    }
+
+    fun clearTransactionsTable(context: SalesHistoryClear){
+
+        println("In clearTransactionsTable")
+
+        var connection = "http://$ipAddress:8888/Database/clearTransactionsTable"
+
+        //"http://192.168.0.63:8888/Database/login"
+        Fuel.post(connection).response(){ request, response, result ->
+            //Option 1
+            var (data, error) = result
+            if(data != null) {
+                val returnedResult = String(data!!)
+                Log.d("Web Service Log", "Data returned from REST server : $returnedResult")
+                //val clearGood = Json.decodeFromString<Boolean>(returnedResult)
+                println("Web Service")
+
+                // println("table clear was: $clearGood")
+            }
+            else {
+                Log.d("Web Service Log", "$error")
                 println("Web Service Log $error")
 
             }

@@ -24,7 +24,11 @@ class MakeTransaction : AppCompatActivity() {
             itemNameAutoField.text.clear()
             val itemQtyField = findViewById<EditText>(R.id.itemQtyField)
             itemQtyField.text.clear()
+
+            Toast.makeText(this, "Successfully added transaction ${transaction.id}", Toast.LENGTH_SHORT).show()
         }
+        else
+            Toast.makeText(this, "Error adding transaction ${transaction.id}", Toast.LENGTH_SHORT).show()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
