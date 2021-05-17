@@ -11,16 +11,6 @@ import android.widget.Toast
 
 class SalesHistoryClear : AppCompatActivity() {
 
-    /**
-    fun clearLocalTransactionTable(){
-        val db = DataBaseHandler(this)
-        db.clearTransactionTable()
-
-        val intent = Intent(this, SalesHistory::class.java)
-        startActivity(intent)
-    }
-    **/
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sales_history_clear)
@@ -36,6 +26,9 @@ class SalesHistoryClear : AppCompatActivity() {
         salesHistoryConfirmClear.setOnClickListener{
             var serverDB = ServerHandler()
             serverDB.clearTransactionsTable(this)
+
+            val intent = Intent(this, SalesHistory::class.java)
+            startActivity(intent)
         }
     }
 }
