@@ -6,25 +6,152 @@
     android:layout_height="match_parent"
     tools:context=".Reports">
 
-    <Button
-        android:id="@+id/reportsBack"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Back to Main Menu"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.05"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.976" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center_horizontal"
+        android:weightSum="20"
+        >
 
-    <TextView
-        android:id="@+id/textView3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Reports"
-        app:layout_constraintBottom_toTopOf="@+id/reportsBack"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        <TextView
+            android:id="@+id/salesHistoryTitleTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Reports"
+            android:layout_marginTop="5dp"></TextView>
+
+        <TextView
+            android:id="@+id/totalRevenueText"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_gravity="left"
+            android:text="Total Revenue:"
+            android:textSize="20dp"
+            android:paddingVertical="5dp"
+            android:layout_weight="0.1">
+        </TextView>
+
+        <TextView
+            android:id="@+id/totalRevenueValue"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_gravity="left"
+            android:text="$0.00"
+            android:textSize="30dp"
+            android:paddingVertical="5dp"
+            android:paddingStart="40dp"
+            android:layout_weight="0.1">
+        </TextView>
+
+        <TextView
+            android:id="@+id/totalQtySoldText"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_gravity="left"
+            android:text="Total Quantity Sold:"
+            android:textSize="20dp"
+            android:paddingVertical="5dp"
+            android:layout_weight="0.1">
+        </TextView>
+
+        <TextView
+            android:id="@+id/totalQtySoldValue"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_gravity="left"
+            android:text="0"
+            android:textSize="30dp"
+            android:paddingVertical="5dp"
+            android:paddingStart="50dp"
+            android:layout_weight="0.1">
+        </TextView>
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:background="@color/purple_200">
+
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:id="@+id/headerName"
+                android:text="Item Name"
+                android:paddingVertical="5dp"
+                android:paddingStart="5dp"
+                android:layout_weight="0.3"
+                android:clickable="true">
+            </TextView>
+
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:id="@+id/headerQtySold"
+                android:text="Qty Sold"
+                android:paddingVertical="5dp"
+                android:layout_weight="0.05"
+                android:paddingStart="5dp"
+                android:clickable="true">
+            </TextView>
+
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:id="@+id/headerRevenue"
+                android:text="Revenue"
+                android:paddingVertical="5dp"
+                android:paddingStart="5dp"
+                android:layout_weight="0.1"
+                android:clickable="true">
+            </TextView>
+
+        </LinearLayout>
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scrollbars="vertical"
+            android:layout_weight="20">
+
+            <TableLayout
+                android:id="@+id/reportsTableLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#B2CDE2"
+                android:gravity="center"
+                android:isScrollContainer="true">
+
+            </TableLayout>
+
+        </ScrollView>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/reportsBack"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="60dp"
+                android:layout_weight="1"
+                android:text="Menu" />
+
+            <Button
+                android:id="@+id/syncButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="60dp"
+                android:layout_marginRight="10dp"
+                android:layout_weight="1"
+                android:text="Sync" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

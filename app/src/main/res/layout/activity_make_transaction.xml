@@ -6,6 +6,127 @@
     android:layout_height="match_parent"
     tools:context=".MakeTransaction">
 
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="414dp"
+        android:layout_height="298dp"
+        android:layout_marginTop="48dp"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/itemNameText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="20dp"
+            android:text="Item Name" />
+
+        <AutoCompleteTextView
+            android:id="@+id/itemNameField"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="0dp"
+            android:backgroundTint="#2196F3"
+            android:ems="19"
+            android:hint="Apples"
+            android:inputType="textPersonName"
+            android:completionThreshold="1"/>
+
+        <TextView
+            android:id="@+id/itemNameErrorText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Item name does not exist"
+            android:gravity="center"
+            android:visibility="invisible"
+            android:textColor="#EE2234"/>
+
+        <TextView
+            android:id="@+id/itemQtyText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="5dp"
+            android:text="Quantity" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:id="@+id/itemQtyField"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="0dp"
+                android:backgroundTint="#2196F3"
+                android:ems="5"
+                android:hint="0"
+                android:inputType="numberSigned" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="/"
+                android:textSize="20dp"
+                android:paddingHorizontal="5dp">
+            </TextView>
+
+            <TextView
+                android:id="@+id/itemQtyMax"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0"
+                android:textSize="20dp"
+                android:paddingHorizontal="5dp">
+            </TextView>
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/itemPriceText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="5dp"
+            android:text="Item Price" />
+
+        <TextView
+            android:id="@+id/itemPriceValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="0dp"
+            android:backgroundTint="#2196F3"
+            android:ems="5"
+            android:text="$0.00"
+            android:textSize="20dp" />
+
+        <TextView
+            android:id="@+id/totalPriceText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="5dp"
+            android:text="Total Price" />
+
+        <TextView
+            android:id="@+id/totalPriceValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="0dp"
+            android:backgroundTint="#2196F3"
+            android:ems="5"
+            android:text="$0.00"
+            android:textSize="30dp" />
+    </LinearLayout>
+
     <Button
         android:id="@+id/makeTransactionBack"
         android:layout_width="wrap_content"
@@ -18,15 +139,15 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.976" />
 
-    <TextView
-        android:id="@+id/textView2"
+    <Button
+        android:id="@+id/makeTransactionButton"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="69dp"
         android:text="Make Transaction"
         app:layout_constraintBottom_toTopOf="@+id/makeTransactionBack"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.53" />
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout"
+        app:layout_constraintVertical_bias="0.063" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

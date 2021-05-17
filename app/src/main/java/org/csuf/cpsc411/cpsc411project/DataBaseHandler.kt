@@ -40,11 +40,19 @@ class DataBaseHandler(val context: Context) : SQLiteOpenHelper(context, DATABASE
         const val COL_ITEM_QTY = "ItemQty"
         const val COL_ITEM_PRICE = "ItemPrice"
 
+        const val TRANSACTION_TABLE_NAME = "Transactions"
+        const val COL_TRANSACTION_ID = "TransactionID"
+        const val COL_ITEM_SOLD_NAME = "ItemSoldName"
+        const val COL_ITEM_SOLD_QTY = "ItemSoldQty"
+        const val COL_REVENUE = "Revenue"
+        const val COL_DATE_OF_TRANSACTION = "DateOfTransaction"
+
     }
 
     override fun onCreate(db: SQLiteDatabase?) {
         createUsersTable(db)
         createInventoryTable(db)
+        createTransactionTable(db)
     }
 
     override fun onUpgrade(db: SQLiteDatabase?, oldVersion: Int, newVersion: Int) {
@@ -56,7 +64,7 @@ class DataBaseHandler(val context: Context) : SQLiteOpenHelper(context, DATABASE
     fun insertUser(user : User): Boolean {
         val db = this.writableDatabase
         val cv = ContentValues()
-        cv.put(COL_USERNAME, user.userName)
+        cv.put(COL_USERNAME, user.username)
         cv.put(COL_PASSWORD, user.password)
         val result = db.insert(USER_TABLE_NAME, null, cv)
         return if(result == (-1).toLong()) {
@@ -72,7 +80,7 @@ class DataBaseHandler(val context: Context) : SQLiteOpenHelper(context, DATABASE
     fun checkLogin(user: User) : Boolean {
         val db = this.readableDatabase
         val query = "Select * From $USER_TABLE_NAME " +
-                "Where $COL_USERNAME = '${user.userName}' " +
+                "Where $COL_USERNAME = '${user.username}' " +
                 "And $COL_PASSWORD = '${user.password}' "
 
         val result = db.rawQuery(query, null)
@@ -84,6 +92,7 @@ class DataBaseHandler(val context: Context) : SQLiteOpenHelper(context, DATABASE
     fun insertItem(item: Item): Boolean {
         val db = this.writableDatabase
         val cv = ContentValues()
+        cv.put(COL_ITEM_ID, item.itemId)
         cv.put(COL_ITEM_NAME, item.itemName)
         cv.put(COL_ITEM_QTY, item.itemQty)
         cv.put(COL_ITEM_PRICE, item.itemPrice)
@@ -98,11 +107,36 @@ class DataBaseHandler(val context: Context) : SQLiteOpenHelper(context, DATABASE
         }
     }
 
+
+    // Adds new item into inventory table
+    fun insertItemWithoutToast(item: Item): Boolean {
+        val db = this.writableDatabase
+        val cv = ContentValues()
+        cv.put(COL_ITEM_ID, item.itemId)
+        cv.put(COL_ITEM_NAME, item.itemName)
+        cv.put(COL_ITEM_QTY, item.itemQty)
+        cv.put(COL_ITEM_PRICE, item.itemPrice)
+        val result = db.insert(INVENTORY_TABLE_NAME, null, cv)
+        return result != (-1).toLong()
+    }
+
+    fun insertTransactionWithoutToast(transaction: Transaction): Boolean {
+        val db = this.writableDatabase
+        val cv = ContentValues()
+        cv.put(COL_ITEM_ID, transaction.id)
+        cv.put(COL_ITEM_NAME, transaction.itemSoldName)
+        cv.put(COL_ITEM_QTY, transaction.itemSoldQty)
+        cv.put(COL_ITEM_PRICE, transaction.revenue)
+        val result = db.insert(INVENTORY_TABLE_NAME, null, cv)
+        return result != (-1).toLong()
+    }
+
+
     fun updateItem(item: Item): Boolean {
-        if(!checkEntryExists(INVENTORY_TABLE_NAME, COL_ITEM_ID, item.itemId.toString())){
-            Toast.makeText(context, "Update failed error: Item not found", Toast.LENGTH_SHORT).show()
-            return false
-        }
+//        if(!checkItemExists(item)){
+//            Toast.makeText(context, "Update failed error: Item not found", Toast.LENGTH_SHORT).show()
+//            return false
+//        }
         val db = this.writableDatabase
         val cv = ContentValues()
         cv.put(COL_ITEM_NAME, item.itemName)
@@ -110,29 +144,29 @@ class DataBaseHandler(val context: Context) : SQLiteOpenHelper(context, DATABASE
         cv.put(COL_ITEM_PRICE, item.itemPrice)
         val whereClause = "$COL_ITEM_ID = ${item.itemId}"
         val result = db.update(INVENTORY_TABLE_NAME, cv, whereClause, null)
-        return if(result <= 0) {
-            Toast.makeText(context, "Failed to update ${item.itemName}", Toast.LENGTH_SHORT).show()
-            false
-        }
-        else {
-            Toast.makeText(context, "Successfully updated ${item.itemName}", Toast.LENGTH_SHORT).show()
-            true
-        }
+        return result > 0
     }
 
-    fun checkEntryExists(table: String, column: String, value: String): Boolean {
-        val cursor = getEntry(table, column, value)
-        if(cursor.count <= 0){
-            cursor.close()
-            return false
-        }
-        cursor.close()
-        return true
+    fun getItem(cursor: Cursor): Item {
+        val id = cursor.getString(cursor.getColumnIndex(COL_ITEM_ID)).toInt()
+        val name = cursor.getString(cursor.getColumnIndex(COL_ITEM_NAME))
+        val qty = cursor.getString(cursor.getColumnIndex(COL_ITEM_QTY)).toInt()
+        val price = cursor.getString(cursor.getColumnIndex(COL_ITEM_PRICE)).toInt()
+        return Item(id, name, qty, price)
+    }
+
+    fun checkItemExists(item: Item): Boolean {
+        val db = this.readableDatabase
+        val query = "Select * From $INVENTORY_TABLE_NAME " +
+                "Where $COL_ITEM_NAME = '${item.itemName}' AND " +
+                "$COL_ITEM_ID != '${item.itemId}'"
+        val result = db.rawQuery(query, null)
+        return result.moveToFirst()
     }
 
     fun getEntry(table: String, column: String, value: String): Cursor {
         val db = this.readableDatabase
-        val query = "Select * from $table Where $column = $value"
+        val query = "Select * from $table Where $column = '$value'"
         return db.rawQuery(query, null)
     }
 
@@ -145,13 +179,37 @@ class DataBaseHandler(val context: Context) : SQLiteOpenHelper(context, DATABASE
     fun clearInventoryTable(){
         val db = this.writableDatabase
         db?.execSQL("DROP TABLE IF EXISTS $INVENTORY_TABLE_NAME")
-        createInventoryTable(db)
+        createInventoryTable(db, "Inventory table cleared")
     }
+    fun refreshInventoryTable(){
+        val db = this.writableDatabase
+        db?.execSQL("DROP TABLE IF EXISTS $INVENTORY_TABLE_NAME")
+        createInventoryTable(db, "Inventory table refreshed")
+    }
+
+    fun addTransaction(transaction: Transaction): Item {
+        val cursor = transaction.itemSoldName.let { getEntry(INVENTORY_TABLE_NAME, COL_ITEM_NAME, transaction.itemSoldName) }
+        return if(cursor.moveToFirst() && cursor.count >= 1) {
+            val itemID = cursor.getInt(cursor.getColumnIndex(COL_ITEM_ID))
+            val itemName = cursor.getString(cursor.getColumnIndex(COL_ITEM_NAME))
+            val itemQty = cursor.getInt(cursor.getColumnIndex(COL_ITEM_QTY))
+            val itemPrice = cursor.getInt(cursor.getColumnIndex(COL_ITEM_PRICE))
+            val item = Item(itemID, itemName, itemQty, itemPrice)
+            item.itemQty -= transaction.itemSoldQty
+            updateItem(item)
+
+            item
+        }
+        else{
+            Item(-1, "Name", 0, 0)
+        }
+    }
+
 
     private fun createUsersTable(db: SQLiteDatabase?){
         val createUserTable = "CREATE TABLE $USER_TABLE_NAME " +
                 "(" +
-                "$COL_USER_ID INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                "$COL_USER_ID INTEGER PRIMARY KEY, " +
                 "$COL_USERNAME VARCHAR(256), " +
                 "$COL_PASSWORD VARCHAR(256)" +
                 ")"
@@ -159,17 +217,43 @@ class DataBaseHandler(val context: Context) : SQLiteOpenHelper(context, DATABASE
         db?.execSQL(createUserTable)
     }
 
-    private fun createInventoryTable(db: SQLiteDatabase?){
+    private fun createInventoryTable(db: SQLiteDatabase?, message: String){
         val createInventoryTable = "CREATE TABLE $INVENTORY_TABLE_NAME " +
                 "(" +
-                "$COL_ITEM_ID INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                "$COL_ITEM_ID INTEGER PRIMARY KEY, " +
                 "$COL_ITEM_NAME VARCHAR(256), " +
                 "$COL_ITEM_QTY INTEGER, " +
                 "$COL_ITEM_PRICE INTEGER " +
                 ")"
 
         db?.execSQL(createInventoryTable)
-        Toast.makeText(context, "Inventory table cleared", Toast.LENGTH_SHORT).show()
+        Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+    }
+
+    private fun createInventoryTable(db: SQLiteDatabase?){
+        val createInventoryTable = "CREATE TABLE $INVENTORY_TABLE_NAME " +
+                "(" +
+                "$COL_ITEM_ID INTEGER PRIMARY KEY, " +
+                "$COL_ITEM_NAME VARCHAR(256), " +
+                "$COL_ITEM_QTY INTEGER, " +
+                "$COL_ITEM_PRICE INTEGER " +
+                ")"
+
+        db?.execSQL(createInventoryTable)
+    }
+
+    private fun createTransactionTable(db: SQLiteDatabase?){
+        val createTransactionTable = "CREATE TABLE $TRANSACTION_TABLE_NAME " +
+                "(" +
+                "$COL_TRANSACTION_ID INTEGER PRIMARY KEY, " +
+                "$COL_ITEM_SOLD_NAME VARCHAR(256), " +
+                "$COL_ITEM_SOLD_QTY INTEGER, " +
+                "$COL_REVENUE INTEGER, " +
+                "$COL_DATE_OF_TRANSACTION INTEGER " +
+                ")"
+
+        db?.execSQL(createTransactionTable)
+        Toast.makeText(context, "Transaction table created", Toast.LENGTH_SHORT).show()
     }
 }
 

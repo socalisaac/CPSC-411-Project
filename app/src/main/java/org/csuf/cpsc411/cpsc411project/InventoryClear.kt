@@ -8,6 +8,15 @@ import android.widget.Toast
 
 
 class InventoryClear : AppCompatActivity() {
+
+    fun clearlocalInventoryTable(){
+        val db = DataBaseHandler(this)
+        db.clearInventoryTable()
+
+        val intent = Intent(this, Inventory::class.java)
+        startActivity(intent)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_inventory_clear)
@@ -21,11 +30,8 @@ class InventoryClear : AppCompatActivity() {
         val confirmClear = findViewById<Button>(R.id.confirmClear)
 
         confirmClear.setOnClickListener{
-            val db = DataBaseHandler(this)
-            db.clearInventoryTable()
-
-            val intent = Intent(this, Inventory::class.java)
-            startActivity(intent)
+            var serverDB = ServerHandler()
+            serverDB.clearInventoryTable(this)
         }
     }
 }
