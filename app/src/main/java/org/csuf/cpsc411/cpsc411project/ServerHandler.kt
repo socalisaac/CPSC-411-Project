@@ -265,6 +265,34 @@ class ServerHandler(): AppCompatActivity() {
 
     }
 
+    fun getTransactionFromServer(context: Reports){
+
+        println("In Check login")
+
+        val connection = "http://$ipAddress:8888/Database/getTransactionTable"
+
+        Fuel.post(connection).response{ request, response, result ->
+            //Option 1
+            val (data, error) = result
+            if(data != null) {
+                val returnedResult = String(data!!)
+                Log.d("Web Service Log", "Data returned from REST server : $returnedResult")
+                val list = Json.decodeFromString<MutableList<Transaction>>(returnedResult)
+                println("Web Service")
+
+                println("Got transaction list with size: ${list.size}")
+
+                context.syncListWithServerDB(list)
+            }
+            else {
+                Log.d("Web Service Log", "$error")
+                println("Web Service Log $error")
+
+            }
+        }
+
+    }
+
     fun addTransaction(transaction: Transaction, context: MakeTransaction){ //fun registerUser(user: User, context: RegisterUser)
         val jsonStr = Json.encodeToString(transaction)
 
